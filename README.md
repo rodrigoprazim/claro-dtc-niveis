@@ -1,6 +1,6 @@
-# new-pagina-dc
+# claro-dtc-niveis
 
-Nova modelo de página Data Center com suporte a Docsis 3.1 + OFDM
+Nova modelo de página Data Center com suporte a Docsis 3.1 + OFDM + OFDMA
 
 Desenvolvido por Elicio Junior
 
