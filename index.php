@@ -829,6 +829,7 @@ body {
                 htmlData += '    <span style="font-size: 1.2em;"><b>MAC ou Contrato não Encontrado</b></span>';
                 htmlData += ' </div>';
                 htmlData += '</div>';
+                $("#content").empty();
                 loading_hide();
                 $("#content").html(htmlData);
               }
@@ -1059,6 +1060,7 @@ body {
             htmlData += '    <span style="font-size: 1.2em;"><b>MAC ou Contrato não Encontrado</b></span>';
             htmlData += ' </div>';
             htmlData += '</div>';
+            $("#content").empty();
             loading_hide();
             $("#content").html(htmlData);
           }
