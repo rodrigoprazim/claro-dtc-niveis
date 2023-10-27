@@ -804,16 +804,41 @@ body {
             htmlData += '     </div>';
             htmlData += '     <!-- END NODE -->';
           } else {
-            htmlData  = '<div class="container-fluid">';
-            htmlData += '  <div class="alert alert-danger" style="text-align: center;">';
-            htmlData += '    <span style="font-size: 1.2em;"><b>Cable não Encontrado | MAC: '+ consulta.toUpperCase() +'</b></span>';
-            htmlData += ' </div>';
-            htmlData += '</div>';
+            $.post("recebe_new.php",{
+              search: "contrato",
+              consulta: consulta
+            },
+            function(retorna){
+              loading_hide();
+              var obj = JSON.parse(retorna);
+              if (obj.count > 0){
+                var option = '<select class="custom-select input-Consulta" id="selectSearchField">';
+                $.each(obj, function(i, info){
+                  if(i != 'count'){
+                    var mac = info['docsismodemmacaddress']['0'].replace(/1,6,|:/g, "");
+                    option += '<option value="' +mac.toUpperCase()+ '">' +mac.toUpperCase()+ '</option>';
+                  };
+                })
+                option += '</select>';
+                document.getElementById('type-Consulta').innerHTML = option;
+                document.getElementById('clearInputField').style.display = "block";
+                $("#content").empty();
+              }else{
+                htmlData  = '<div class="container-fluid">';
+                htmlData += '  <div class="alert alert-danger" style="text-align: center;">';
+                htmlData += '    <span style="font-size: 1.2em;"><b>MAC ou Contrato não Encontrado</b></span>';
+                htmlData += ' </div>';
+                htmlData += '</div>';
+                loading_hide();
+                $("#content").html(htmlData);
+              }
+            });
           };
           loading_hide();
           $("#content").html(htmlData);
-          var ip_cm = obj['Cable Modem']['End IP'];
+
           $("#staticBackdropLog").on('show.bs.modal', function(e) {
+            var ip_cm = obj['Cable Modem']['End IP'];
             $("#log").empty();
             loading_modal_show();
             $.post("ccm/get_logcm.php",{
@@ -824,8 +849,9 @@ body {
               $("#log").html(retorna);
             });
           });
-          var upstreams = obj['Cable Modem']['Upstreams'];
+
           $("#staticBackdropUpstreams").on('show.bs.modal', function(e) {
+            var upstreams = obj['Cable Modem']['Upstreams'];
             htmlUp = '<table class="table table-sm table-bordered table-hover">';
             htmlUp += '   <thead class="thead-dark">';
             htmlUp += '   <tr>';
@@ -843,13 +869,13 @@ body {
               htmlUp += '      <td>'+Object.values(upstreams)[indexUp]['TX Level']+'</td>';
               htmlUp += '      <td>'+(Object.values(upstreams)[indexUp]['Width'])/1000000+' MHz</td>';
               htmlUp += '    </tr>';
-             };
+            };
             htmlUp += '  </tbody>';
             htmlUp += '</table>';
             document.getElementById('upstreamsTable').innerHTML = htmlUp;
           });
-          var downstreams = obj['Cable Modem']['Downstreams'];
           $("#staticBackdropDownstreams").on('show.bs.modal', function(e) {
+            var downstreams = obj['Cable Modem']['Downstreams'];
             htmlDown = '<table class="table table-sm table-bordered table-hover">';
             htmlDown += '   <thead class="thead-dark">';
             htmlDown += '   <tr>';
@@ -872,8 +898,8 @@ body {
             htmlDown += '</table>';
             document.getElementById('downstreamsTable').innerHTML = htmlDown;
           });
-          var mta = obj['MTA'];
           $("#staticBackdropMta").on('show.bs.modal', function(e) {
+            var mta = obj['MTA'];
             $.post("recebe_mta.php",{
               mta_mac: mta['Mac'].toUpperCase()
             },
@@ -926,8 +952,8 @@ body {
               document.getElementById('mtaTable').innerHTML = htmlMta;
             });
           });
-          var ofdm = obj['Docsis 3.1']['Down OFDM Channels'];
           $("#staticBackdropOfdmInfo").on('show.bs.modal', function(e) {
+            var ofdm = obj['Docsis 3.1']['Down OFDM Channels'];
             htmlOfdmInfo = '<table class="table table-sm table-bordered table-hover">';
             htmlOfdmInfo += '   <thead class="thead-dark">';
             htmlOfdmInfo += '   <tr>';
@@ -948,6 +974,7 @@ body {
             document.getElementById('ofdmInfoTable').innerHTML = htmlOfdmInfo;
           });
           $("#staticBackdropOfdmFreq").on('show.bs.modal', function(e) {
+            var ofdm = obj['Docsis 3.1']['Down OFDM Channels'];
             htmlOfdmFreq = '<table class="table table-sm table-bordered table-hover">';
             htmlOfdmFreq += '   <thead class="thead-dark">';
             htmlOfdmFreq += '   <tr>';
@@ -967,8 +994,8 @@ body {
             htmlOfdmFreq += '</table>';
             document.getElementById('OfdmFreqTable').innerHTML = htmlOfdmFreq;
           });
-          var ofdma = obj['Docsis 3.1']['Up OFDMA Channels'];
           $("#staticBackdropOfdmaFreq").on('show.bs.modal', function(e) {
+            var ofdma = obj['Docsis 3.1']['Up OFDMA Channels'];
             htmlOfdmaFreq = '<table class="table table-sm table-bordered table-hover">';
             htmlOfdmaFreq += '   <thead class="thead-dark">';
             htmlOfdmaFreq += '   <tr>';
@@ -1006,8 +1033,8 @@ body {
           });
         });
       } else {
-          loading_show();
-          $.post("recebe_new.php",{
+        loading_show();
+        $.post("recebe_new.php",{
           search: "contrato",
           consulta: consulta
         },
@@ -1025,10 +1052,16 @@ body {
             option += '</select>';
             document.getElementById('type-Consulta').innerHTML = option;
             document.getElementById('clearInputField').style.display = "block";
+            $("#content").empty();
           }else{
-            reset();
+            htmlData  = '<div class="container-fluid">';
+            htmlData += '  <div class="alert alert-danger" style="text-align: center;">';
+            htmlData += '    <span style="font-size: 1.2em;"><b>MAC ou Contrato não Encontrado</b></span>';
+            htmlData += ' </div>';
+            htmlData += '</div>';
+            loading_hide();
+            $("#content").html(htmlData);
           }
-          $("#content").empty();
         });
       };
     });
