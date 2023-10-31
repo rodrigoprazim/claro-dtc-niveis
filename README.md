@@ -1,4 +1,4 @@
-# claro-dtc-niveis
+# [Claro] DTC Niveis
 
 Nova modelo de página Data Center com suporte a Docsis 3.1 + OFDM + OFDMA
 
