@@ -149,7 +149,7 @@ body {
         &nbsp;<input type="checkbox" class="custom-control-input" id="darkSwitch" />
         &nbsp;<label class="custom-control-label" for="darkSwitch"><i class="fa fa-moon-o" aria-hidden="true"></i></label>
       </div>
-      <script src="./assets/css/dark.min.js"></script>
+      <script src="./assets/js/dark.min.js"></script>
     </nav>
     <!-- END NAVBAR -->
   </div>
@@ -837,8 +837,11 @@ body {
               }
             });
           };
-          loading_hide();
-          $("#content").html(htmlData);
+          
+          if(typeof htmlData !== "undefined"){
+            loading_hide();
+            $("#content").html(htmlData);
+          }
 
           $("#staticBackdropLog").on('show.bs.modal', function(e) {
             var ip_cm = obj['Cable Modem']['End IP'];
