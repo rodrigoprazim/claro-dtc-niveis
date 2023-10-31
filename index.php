@@ -19,17 +19,17 @@
 <title><?php echo $vGlobal['nome_cidade']; ?> - Claro S.A.</title>
 <meta name="viewport" content="width=device-width" />
 <!-- Bootstrap core CSS -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<link href="./assets/css/bootstrap.min.css?v=4.5.2" rel="stylesheet">
 <!-- Bootstrap Dark CSS -->
-<link href="./assets/css/dark.min.css" rel="stylesheet">
+<link href="./assets/css/dark.css" rel="stylesheet">
 
 <!-- Bootstrap core JavaScript -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="./assets/js/jquery.min.js?v=3.5.1"></script>
+<script src="./assets/js/bootstrap.bundle.min.js?v=4.5.2"></script>
+<script src="./assets/js/popper.min.js"></script>
+<script src="./assets/js/bootstrap.min.js?v=4.5.2"></script>
 <!--  Fonts and icons     -->
-<link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+<link href="./assets/css/font-awesome.min.css?v=4.7.0" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap" rel="stylesheet">
 <style>
@@ -149,7 +149,7 @@ body {
         &nbsp;<input type="checkbox" class="custom-control-input" id="darkSwitch" />
         &nbsp;<label class="custom-control-label" for="darkSwitch"><i class="fa fa-moon-o" aria-hidden="true"></i></label>
       </div>
-      <script src="./assets/css/dark.js"></script>
+      <script src="./assets/css/dark.min.js"></script>
     </nav>
     <!-- END NAVBAR -->
   </div>
@@ -368,7 +368,7 @@ body {
               htmlCPEs += ' </thead>';
               htmlCPEs += ' <tbody>';
               for(indexCPE = 1; indexCPE < Object.keys(cpes).length -1; indexCPE++){
-                if( Object.values(cpes)[indexCPE]['IP'] != obj['Cable Modem']['End IP'] && Object.values(cpes)[indexCPE]['IP'] != '0.0.0.0' && Object.values(cpes)[indexCPE]['IP'] != 'N/A'){
+                if(Object.values(cpes)[indexCPE]['IP'] != obj['Cable Modem']['End IP'] && Object.values(cpes)[indexCPE]['IP'] != '0.0.0.0' && Object.values(cpes)[indexCPE]['IP'] != 'N/A'){
                   if(Object.values(cpes)[indexCPE]['IP'].substring(0, 4) != '10.9' || Object.values(cpes)[indexCPE]['IP'].substring(0, 4) != '100.'){
                     if(Object.values(cpes)[indexCPE]['IP'].substring(0, 3) == '10.' || Object.values(cpes)[indexCPE]['IP'].substring(0, 3) == '11.' || Object.values(cpes)[indexCPE]['IP'].substring(0, 4) == '172.'){
                       htmlCPEs += '    <tr>';
@@ -382,7 +382,7 @@ body {
                       htmlCPEs += '      <td>'+Object.values(cpes)[indexCPE]['MAC']+'</td>';
                       htmlCPEs += '      <td>'+Object.values(cpes)[indexCPE]['IP']+'</td>';
                       htmlCPEs += '    </tr>';
-                      };
+                    };
                   };
                 };
               };
@@ -859,7 +859,7 @@ body {
             htmlUp += '   <thead class="thead-dark">';
             htmlUp += '   <tr>';
             htmlUp += '     <th scope="col">#</th>';
-            htmlUp += '     <th scope="col">Freq</th>';
+            htmlUp += '     <th scope="col">Frequencia</th>';
             htmlUp += '     <th scope="col">Tx Level</th>';
             htmlUp += '     <th scope="col">Width</th>';
             htmlUp += '   </tr>';
@@ -883,7 +883,7 @@ body {
             htmlDown += '   <thead class="thead-dark">';
             htmlDown += '   <tr>';
             htmlDown += '     <th scope="col">#</th>';
-            htmlDown += '     <th scope="col">Freq</th>';
+            htmlDown += '     <th scope="col">Frequencia</th>';
             htmlDown += '     <th scope="col">RX Level</th>';
             htmlDown += '     <th scope="col">SNR</th>';
             htmlDown += '   </tr>';
@@ -1002,12 +1002,12 @@ body {
             htmlOfdmaFreq = '<table class="table table-sm table-bordered table-hover">';
             htmlOfdmaFreq += '   <thead class="thead-dark">';
             htmlOfdmaFreq += '   <tr>';
-            htmlOfdmaFreq += '     <th scope="col">Base Freq</th>';
+            htmlOfdmaFreq += '     <th scope="col">Frequencia Base</th>';
             htmlOfdmaFreq += '     <th scope="col">Channel Width</th>';
             htmlOfdmaFreq += '   </tr>';
             htmlOfdmaFreq += ' </thead>';
             htmlOfdmaFreq += ' <tbody>';
-            htmlOfdmaFreq += '      <td>'+ofdma['Base Freq.']+'</td>';
+            htmlOfdmaFreq += '      <td>'+(ofdma['Base Freq.'])/1000000+' MHz</td>';
             htmlOfdmaFreq += '      <td>'+(ofdma['Channel Width'])/1000000+' MHz</td>';
             htmlOfdmaFreq += '    </tr>';
             htmlOfdmaFreq += '  </tbody>';
