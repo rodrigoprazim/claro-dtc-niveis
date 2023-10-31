@@ -1,23 +1,22 @@
 <?php
+include('variables.php');
+include($vGlobal['dirPath']."ldap_local.php");
+
 //set headers to NOT cache a page
 header("Content-type: text/html; charset=utf-8"); //Charset
 header("Cache-Control: no-cache, must-revalidate"); //HTTP 1.1
 header("Pragma: no-cache"); //HTTP 1.0
 header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); //Date in the past
 
-$dirPath = "../inc/";
-
-$DNS_PROXY = '187.122.254.114';
 $modem = $_POST['mta_mac'];
-include($dirPath."ldap_local.php");
-$contexto = "dc=mta,dc=virtua_cluster-blm_docsis";
+$contexto = "dc=mta,dc=".$vGlobal['dc_ldap'];
 $prog = "/dados/coletor/mta_query";
 
-if (! $ds_local){
-  die ("LDAP: Impossivel conectar ao server ... contate o Datacenter");
+if (!$ds_local){
+  die ("LDAP: Impossivel conectar ao server... Contate o Datacenter.");
 }
 
-$r=ldap_bind($ds_local,"uid=datacenter,dc=virtua", "dc2003");
+$r = ldap_bind($ds_local,"uid=datacenter,dc=virtua","dc2003");
 if ($r == FALSE){
   die("LDAP: Usuario ou senha invalidos ");
 }
@@ -41,8 +40,8 @@ if ($modem != ""){
 $provstate_desc = array("IDX0","PASS","IN_PROGRESS","FAIL CONFIG FILE ERROR","PASS WITH WARNINGS","PASS WITH INCOMPLETE PARSING","FAILURE INTERNAL ERROR","FAILURE OTHER REASON");
 
 /* verifica se o DNS esta de acordo */
-$fqdn = $info[0]['docsishostname'][0].".blm.virtua.com.br";
-$cmdline = ("/usr/sbin/dig @$DNS_PROXY $fqdn +noall +answer +short");
+$fqdn = $info[0]['docsishostname'][0].".".$vGlobal['sigla_cidade'].".virtua.com.br";
+$cmdline = ("/usr/sbin/dig @".$vGlobal['dns_proxy']." ".$fqdn." +noall +answer +short");
 $result = shell_exec($cmdline);
 if($result != ''){
   $obj->dns = 1;

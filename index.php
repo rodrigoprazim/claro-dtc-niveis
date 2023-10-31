@@ -9,12 +9,14 @@
 # Datacenter Belém
 # -------------------------------------- #
 -->
+<?php include('variables.php');?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel="shortcut icon" href="assets/img/favicon.ico">
-<title>Belém - Claro S.A.</title>
+<title><?php echo $vGlobal['nome_cidade']; ?> - Claro S.A.</title>
 <meta name="viewport" content="width=device-width" />
 <!-- Bootstrap core CSS -->
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
