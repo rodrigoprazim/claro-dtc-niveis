@@ -10,11 +10,10 @@ Projeto resgatado por: Rodrigo Prazim <rodrigo.prazim@claro.com.br>
 
 ## Desenvolvimento
 * Sistema desenvolvido em HTML/CSS usando Boostrap 4.7 como framework frontend
-* Utilizado Javascript para autmação do frontend e PHP para as consultas ao backend
+* Utilizado Javascript para automação do frontend e PHP para as consultas ao backend
 
 ## Detalhes
-* Alterar o contexto e senha ldap para seu cluster no arquivo recebe_new.php
-* Alterar a community SNMP no arquivo ccm/get_idx.php
+* Alterar a variaveis de acordo com a sua operação em "variables.php"
 
 <br><br>
 
