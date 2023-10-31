@@ -812,6 +812,7 @@ body {
               loading_hide();
               var obj = JSON.parse(retorna);
               if (obj.count > 0){
+                $("#content").empty();
                 var option = '<select class="custom-select input-Consulta" id="selectSearchField">';
                 $.each(obj, function(i, info){
                   if(i != 'count'){
@@ -822,14 +823,13 @@ body {
                 option += '</select>';
                 document.getElementById('type-Consulta').innerHTML = option;
                 document.getElementById('clearInputField').style.display = "block";
-                $("#content").empty();
               }else{
+                $("#content").empty();
                 htmlData  = '<div class="container-fluid">';
                 htmlData += '  <div class="alert alert-danger" style="text-align: center;">';
                 htmlData += '    <span style="font-size: 1.2em;"><b>MAC ou Contrato não Encontrado</b></span>';
                 htmlData += ' </div>';
                 htmlData += '</div>';
-                $("#content").empty();
                 loading_hide();
                 $("#content").html(htmlData);
               }
@@ -1021,6 +1021,7 @@ body {
               });
           });
           $("#clearlog").click(function(){
+            var ip_cm = obj['Cable Modem']['End IP'];
             $.post("ccm/clearlog.php",{
               ip_cm: ip_cm
             },
@@ -1043,6 +1044,7 @@ body {
           loading_hide();
           var obj = JSON.parse(retorna);
           if (obj.count > 0){
+            $("#content").empty();
             var option = '<select class="custom-select input-Consulta" id="selectSearchField">';
             $.each(obj, function(i, info){
               if(i != 'count'){
@@ -1053,14 +1055,13 @@ body {
             option += '</select>';
             document.getElementById('type-Consulta').innerHTML = option;
             document.getElementById('clearInputField').style.display = "block";
-            $("#content").empty();
           }else{
+            $("#content").empty();
             htmlData  = '<div class="container-fluid">';
             htmlData += '  <div class="alert alert-danger" style="text-align: center;">';
             htmlData += '    <span style="font-size: 1.2em;"><b>MAC ou Contrato não Encontrado</b></span>';
             htmlData += ' </div>';
             htmlData += '</div>';
-            $("#content").empty();
             loading_hide();
             $("#content").html(htmlData);
           }
