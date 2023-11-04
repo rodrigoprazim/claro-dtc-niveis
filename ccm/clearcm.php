@@ -4,9 +4,9 @@ if(isset($_POST)){
   $str = "/dados/coletor/clear_cable_docsis -m ".$mac." -f /dados/coletor/cmts.cfg";
   exec($str, $array);
   if ($array[0] = 1){
-    print '{"msg": "Comando executado com sucesso!"}';
+    print '0';
   } else {
-    print '{"msg": "Comando não executado!"}';
+    print '1';
   }
 }
 ?>

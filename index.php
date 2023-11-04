@@ -7,6 +7,7 @@
 # Manutenção por Rodrigo Prazim - rodrigo.prazim@claro.com.br
 # Data: 21/10/2023
 # Datacenter Belém
+# https://github.com/rodrigoprazim/claro-dtc-niveis
 # -------------------------------------- #
 -->
 <?php include('variables.php');?>
@@ -198,7 +199,7 @@ body {
           $("#content").html(data).fadeIn(340); //Inserindo o retorno da pagina ajax
         },
         error: function(data){
-          $("#content").html("<center><p>ERRO ao carregar outra pagina</p></center>").fadeIn(300); //Em caso de erro ele exibe esta mensagem
+          $("#content").html("<center><p>ERRO ao carregar outra pagina.</p></center>").fadeIn(300); //Em caso de erro ele exibe esta mensagem
         }
       });
     });
@@ -292,6 +293,7 @@ body {
             var colorTxModem = "";
             var colorRxModem = "";
             var colorSnrCmts = "";
+            
             if(obj['Cable Modem']['Prim. Up TX Level'] >= 40 && obj['Cable Modem']['Prim. Up TX Level'] <= 50){
               colorTxModem = 'green';
             }else if(obj['Cable Modem']['Prim. Up TX Level'] >= 30 && obj['Cable Modem']['Prim. Up TX Level'] < 40){
@@ -300,16 +302,31 @@ body {
               colorTxModem = 'red';
             }
 
-            if(obj['Cable Modem']['Downstreams']['Down #0']['RX Level'] >= -15 && obj['Cable Modem']['Downstreams']['Down #0']['RX Level'] <= 15){
-              colorRxModem = 'green';
+            if(obj['Cable Modem']['Downstreams']['Count'] > 0){
+
+              if(obj['Cable Modem']['Downstreams']['Down #0']['RX Level'] >= -15 && obj['Cable Modem']['Downstreams']['Down #0']['RX Level'] <= 15){
+                colorRxModem = 'green';
+              }else{
+                colorRxModem = 'red';
+              }
+
+              rxLevel = obj['Cable Modem']['Downstreams']['Down #0']['RX Level']+' dbmV';
+
             }else{
-              colorRxModem = 'red';
+              colorRxModem = 'green';
+              rxLevel = 'Error';
             }
 
             if(obj['CMTS']['Cmts SNR'] >= 35){
               colorSnrCmts = 'green';
             }else{
               colorSnrCmts = 'red';
+            }
+
+            //FUNCAO DE MODELO DE MODEM
+            var linkHttpUserPass = "";
+            if(obj['Cable Modem']['Modelo'] != '123456789'){
+              linkHttpUserPass = ' <a href="javascript:void(0);" style="color:inherit; text-decoration:inherit; data-toggle="tooltipHttpAccess" title="HTTP Access CM"><i class="fa fa-unlock" aria-hidden="true" data-toggle="modal" data-target="#staticBackdropHttpUserPass"></i></a>';
             }
 
             //FUNCAO DE SNR DA UPSTREAM
@@ -374,7 +391,7 @@ body {
                       htmlCPEs += '    <tr>';
                       htmlCPEs += '      <th scope="row">'+indexCPE+'</th>';
                       htmlCPEs += '      <td>'+Object.values(cpes)[indexCPE]['MAC']+'</td>';
-                      htmlCPEs += '      <td>'+Object.values(cpes)[indexCPE]['IP']+'&nbsp;&nbsp;<a href="#" style="color:inherit; text-decoration:inherit;" data-toggle="modal" data-target="#staticBackdropMta" title="Info de MTA"><i class="fa fa-bars" aria-hidden="true"></i></a></td>';
+                      htmlCPEs += '      <td>'+Object.values(cpes)[indexCPE]['IP']+'&nbsp;&nbsp;<a href="javascript:void(0);" style="color:inherit; text-decoration:inherit;" data-toggle="modal" data-target="#staticBackdropMta" title="Info de MTA"><i class="fa fa-bars" aria-hidden="true"></i></a></td>';
                       htmlCPEs += '    </tr>';
                     } else {
                       htmlCPEs += '    <tr>';
@@ -490,14 +507,18 @@ body {
             htmlData += '             <tbody>';
             htmlData += '               <tr>';
             htmlData += '                 <td>';
-            htmlData += '                  <button class="btn btn-outline-info btn-sm" id="clearcable">Clear</button>';
-            htmlData += '                  <button type="button" class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#staticBackdropLog">Log</button>';
-            htmlData += '                </td>';
+            htmlData += '                   <div class="btn-group" role="group" aria-label="Group Button Functions">';
+            htmlData += '                     <button type="button" class="btn btn-outline-info btn-sm" id="clearcable"><i class="fa fa-refresh" aria-hidden="true"></i> Clear</button>';
+            htmlData += '                     <button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#staticBackdropLog"><i class="fa fa-tasks" aria-hidden="true"></i> Log</button>';
+            htmlData += '                     <button type="button" class="btn btn-outline-secondary btn-sm" id="forceupdate"><i class="fa fa-download" aria-hidden="true"></i> Force Update</button>';
+            htmlData += '                     <button type="button" class="btn btn-outline-danger btn-sm" id="forcereboot"><i class="fa fa-power-off" aria-hidden="true"></i> Reboot CM</button>';
+            htmlData += '                   </div>';
+            htmlData += '                 </td>';
             htmlData += '                 <td></td>';
             htmlData += '               </tr>';
             htmlData += '               <tr>';
             htmlData += '                 <td>Contrato: <b>' + docsiscontrato + '</b></td>';
-            htmlData += '                 <td>IP Cable: <b>' + obj['Cable Modem']['End IP'] + '</b></td>';
+            htmlData += '                 <td>IP Cable: <b><a href="http://'+ obj['Cable Modem']['End IP']+'" target="_blank" title="Acessar CM">' + obj['Cable Modem']['End IP'] + '</a>'+linkHttpUserPass+'</b></td>';
             htmlData += '               </tr>';
             htmlData += '               <tr>';
             htmlData += '                 <td>Vendor: <b>' + obj['Cable Modem']['Vendor'] + '</b></td>';
@@ -505,11 +526,11 @@ body {
             htmlData += '               </tr>';
             htmlData += '               <tr>';
             htmlData += '                 <td>Modelo: <b>' + obj['Cable Modem']['Modelo'] + '</b></td>';
-            htmlData += '                 <td>TX: <b><font color="'+ colorTxModem +'">' + obj['Cable Modem']['Prim. Up TX Level'] + ' dBmV</font></b>&nbsp;&nbsp;<a href="#" style="color:inherit; text-decoration:inherit;" data-toggle="tooltipUp" title="Freq. de Ups"><i class="fa fa-bars" aria-hidden="true" data-toggle="modal" data-target="#staticBackdropUpstreams"></i></a></td>';
+            htmlData += '                 <td>TX: <b><font color="'+ colorTxModem +'">' + obj['Cable Modem']['Prim. Up TX Level'] + ' dBmV</font></b>&nbsp;&nbsp;<a href="javascript:void(0);" style="color:inherit; text-decoration:inherit;" data-toggle="tooltipUp" title="Freq. de Ups"><i class="fa fa-bars" aria-hidden="true" data-toggle="modal" data-target="#staticBackdropUpstreams"></i></a></td>';
             htmlData += '               </tr>';
             htmlData += '               <tr>';
             htmlData += '                 <td>Versão: <b>' + obj['Cable Modem']['Sw_Rev'] + '</b></td>';
-            htmlData += '                 <td>RX: <b><font color="'+ colorRxModem +'"> '+ obj['Cable Modem']['Downstreams']['Down #0']['RX Level'] + ' dBmV</font></b>&nbsp;&nbsp;<a href="#" style="color:inherit; text-decoration:inherit; data-toggle="tooltipUp" title="Freq. de Downs"><i class="fa fa-bars" aria-hidden="true" data-toggle="modal" data-target="#staticBackdropDownstreams"></i></a></td>';
+            htmlData += '                 <td>RX: <b><font color="'+ colorRxModem +'"> '+ rxLevel + '</font></b>&nbsp;&nbsp;<a href="javascript:void(0);" style="color:inherit; text-decoration:inherit; data-toggle="tooltipUp" title="Freq. de Downs"><i class="fa fa-bars" aria-hidden="true" data-toggle="modal" data-target="#staticBackdropDownstreams"></i></a></td>';
             htmlData += '               </tr>';
             htmlData += '               <tr>';
             htmlData += '                 <td>Tempo online: <b>' + obj['Cable Modem']['Uptime'] + '</b></td>';
@@ -518,14 +539,14 @@ body {
             /* BLOCO OFDM */
             if(docsisversion == 4){
               htmlData += '               <tr>';
-              htmlData += '                 <td>OFDM: <b><font color="green">OK</font></b>&nbsp;&nbsp;<a href="#" style="color:inherit; text-decoration:inherit; data-toggle="tooltipOfdmInfo" title="OFDM Channel Info"><i class="fa fa-bars" aria-hidden="true" data-toggle="modal" data-target="#staticBackdropOfdmInfo"></i></a></td>';
-              htmlData += '                 <td>Down OFDM Channels:&nbsp;&nbsp;<a href="#" style="color:inherit; text-decoration:inherit; data-toggle="tooltipOfdmFreq" title="OFDM Channel Freq"><i class="fa fa-bars" aria-hidden="true" data-toggle="modal" data-target="#staticBackdropOfdmFreq"></i></a></td>';
+              htmlData += '                 <td>OFDM: <b><font color="green">OK</font></b>&nbsp;&nbsp;<a href="javascript:void(0);" style="color:inherit; text-decoration:inherit; data-toggle="tooltipOfdmInfo" title="OFDM Channel Info"><i class="fa fa-bars" aria-hidden="true" data-toggle="modal" data-target="#staticBackdropOfdmInfo"></i></a></td>';
+              htmlData += '                 <td>Down OFDM Channels:&nbsp;&nbsp;<a href="javascript:void(0);" style="color:inherit; text-decoration:inherit; data-toggle="tooltipOfdmFreq" title="OFDM Channel Freq"><i class="fa fa-bars" aria-hidden="true" data-toggle="modal" data-target="#staticBackdropOfdmFreq"></i></a></td>';
               htmlData += '               </tr>';
             /* EOF BLOCO OFDM */
             /* BLOCO OFDMA */
               htmlData += '               <tr>';
               htmlData += '                 <td>OFDMA: <b><font color="green">'+ obj['Docsis 3.1']['Up OFDMA Channels']['Tx Level'] +' dBmV</font></b></td>';
-              htmlData += '                 <td>Up OFDMA Channels:&nbsp;&nbsp;<a href="#" style="color:inherit; text-decoration:inherit; data-toggle="tooltipOfdmaFreq" title="OFDMA Channel Freq"><i class="fa fa-bars" aria-hidden="true" data-toggle="modal" data-target="#staticBackdropOfdmaFreq"></i></a></td>';
+              htmlData += '                 <td>Up OFDMA Channels:&nbsp;&nbsp;<a href="javascript:void(0);" style="color:inherit; text-decoration:inherit; data-toggle="tooltipOfdmaFreq" title="OFDMA Channel Freq"><i class="fa fa-bars" aria-hidden="true" data-toggle="modal" data-target="#staticBackdropOfdmaFreq"></i></a></td>';
               htmlData += '               </tr>';
             };
             /* EOF BLOCO OFDMA */
@@ -576,7 +597,7 @@ body {
             htmlData += '                 <span id="upstreamsTable"></span>';
             htmlData += '               </div>';
             htmlData += '               <div class="modal-footer">';
-            htmlData += '                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>';
+            htmlData += '                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
             htmlData += '               </div>';
             htmlData += '             </div>';
             htmlData += '           </div>';
@@ -597,7 +618,7 @@ body {
             htmlData += '                 <span id="downstreamsTable"></span>';
             htmlData += '               </div>';
             htmlData += '               <div class="modal-footer">';
-            htmlData += '                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>';
+            htmlData += '                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
             htmlData += '               </div>';
             htmlData += '             </div>';
             htmlData += '           </div>';
@@ -618,7 +639,7 @@ body {
             htmlData += '                 <span id="mtaTable"></span>';
             htmlData += '               </div>';
             htmlData += '               <div class="modal-footer">';
-            htmlData += '                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>';
+            htmlData += '                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
             htmlData += '               </div>';
             htmlData += '             </div>';
             htmlData += '           </div>';
@@ -639,7 +660,7 @@ body {
             htmlData += '                 <span id="ofdmInfoTable"></span>';
             htmlData += '               </div>';
             htmlData += '               <div class="modal-footer">';
-            htmlData += '                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>';
+            htmlData += '                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
             htmlData += '               </div>';
             htmlData += '             </div>';
             htmlData += '           </div>';
@@ -660,7 +681,7 @@ body {
             htmlData += '                 <span id="OfdmFreqTable"></span>';
             htmlData += '               </div>';
             htmlData += '               <div class="modal-footer">';
-            htmlData += '                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>';
+            htmlData += '                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
             htmlData += '               </div>';
             htmlData += '             </div>';
             htmlData += '           </div>';
@@ -681,7 +702,7 @@ body {
             htmlData += '                 <span id="OfdmaFreqTable"></span>';
             htmlData += '               </div>';
             htmlData += '               <div class="modal-footer">';
-            htmlData += '                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>';
+            htmlData += '                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
             htmlData += '               </div>';
             htmlData += '             </div>';
             htmlData += '           </div>';
@@ -706,13 +727,42 @@ body {
             htmlData += '                 </div';
             htmlData += '               </div>';
             htmlData += '               <div class="modal-footer">';
-            htmlData += '                 <button type="button" class="btn btn-outline-danger" id="clearlog">Limpar Log</button>';
-            htmlData += '                 <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Fechar</button>';
+            htmlData += '                 <div class="btn-group" role="group" aria-label="Group Button Functions">';
+            htmlData += '                   <button type="button" class="btn btn-outline-danger" id="clearlog"><i class="fa fa-eraser" aria-hidden="true"></i> Limpar Log</button>';
+            htmlData += '                   <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
+            htmlData += '                 </div>';
             htmlData += '               </div>';
             htmlData += '             </div>';
             htmlData += '           </div>';
             htmlData += '         </div>';
             htmlData += '         <!-- END LOG MODAL -->';
+            htmlData += '         <!-- HTTP USER PASS MODAL -->';
+            htmlData += '         <!-- Modal -->';
+            htmlData += '         <div class="modal fade" id="staticBackdropHttpUserPass" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropHttpUserPassLabel" aria-hidden="true">';
+            htmlData += '           <div class="modal-dialog">';
+            htmlData += '             <div class="modal-content">';
+            htmlData += '               <div class="modal-header alert alert-info">';
+            htmlData += '                 <i class="fa fa-unlock fa-2x" aria-hidden="true"></i>&nbsp;&nbsp;';
+            htmlData += '                 <h5 class="modal-title" id="staticBackdropHttpUserPassLabel">Credenciais HTTP</h5>';
+            htmlData += '                 <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">';
+            htmlData += '                   <span aria-hidden="true">&times;</span>';
+            htmlData += '                 </button>';
+            htmlData += '               </div>';
+            htmlData += '               <div class="modal-body">';
+            htmlData += '                 <div class="container_modal"></div>';
+            htmlData += '                   <div class="loading_modal"></div>';
+            htmlData += '                   <span id="httpuserpass"></span>';
+            htmlData += '                 </div';
+            htmlData += '               </div>';
+            htmlData += '               <div class="modal-footer">';
+            htmlData += '                 <div class="btn-group" role="group" aria-label="Group Button Functions">';
+            htmlData += '                   <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
+            htmlData += '                 </div>';
+            htmlData += '               </div>';
+            htmlData += '             </div>';
+            htmlData += '           </div>';
+            htmlData += '         </div>';
+            htmlData += '         <!-- END USER PASS MODAL -->';
             htmlData += '       </div>';
             htmlData += '     </div>';
             htmlData += '     <!-- END CABLE MODEM -->';
@@ -853,6 +903,20 @@ body {
             function(retorna){
               loading_modal_hide();
               $("#log").html(retorna);
+            });
+          });
+
+          $("#staticBackdropHttpUserPass").on('show.bs.modal', function(e) {
+            var ip_cm = obj['Cable Modem']['End IP'];
+            $("#httpuserpass").empty();
+            loading_modal_show();
+            $.post("ccm/get_httpuserpasscm.php",{
+              ip_cm: ip_cm,
+              modelo: obj['Cable Modem']['Modelo']
+            },
+            function(retorna){
+              loading_modal_hide();
+              $("#httpuserpass").html(retorna);
             });
           });
 
@@ -1020,18 +1084,54 @@ body {
           $("#clearcable").click(function(){
             $.post("ccm/clearcm.php",{
               mac: mac
+            },
+            function(response){
+              if(response == 0){
+                alert('Comando enviado com sucesso.');
+              } else {
+                alert('Falha ao enviar comando para o CM!');
+              };
+            });
+          });
+          $("#forceupdate").click(function(){
+            var ip_cm = obj['Cable Modem']['End IP'];
+            $.post("ccm/executor.php",{
+              ip_cm: ip_cm,
+              funcao: 'forceupdate'
+            },
+            function(response){
+              if(response == 0){
+                alert('Comando enviado com sucesso. Consultar Logs.');
+              } else {
+                alert('Falha ao enviar comando para o CM!');
+              };
+            });
+          });
+          $("#forcereboot").click(function(){
+            var ip_cm = obj['Cable Modem']['End IP'];
+            var msg = "Tem certeza que deseja reiniciar o CM?";
+            if(confirm(msg)){
+              $.post("ccm/executor.php",{
+                ip_cm: ip_cm,
+                funcao: 'forcereboot'
               },
-              function(reponse){
-                console.log(reponse);
+              function(response){
+                if(response == 0){
+                  alert('Comando enviado com sucesso.');
+                } else {
+                  alert('Falha ao enviar comando para o CM!');
+                };
               });
+            }
           });
           $("#clearlog").click(function(){
             var ip_cm = obj['Cable Modem']['End IP'];
-            $.post("ccm/clearlog.php",{
-              ip_cm: ip_cm
+            $.post("ccm/executor.php",{
+              ip_cm: ip_cm,
+              funcao: 'clearlog'
             },
-            function(reponse){
-              if(reponse == 0){
+            function(response){
+              if(response == 0){
                 alert('Log deletado com sucesso!');
               } else {
                 alert('Erro ao deletar o log!');
