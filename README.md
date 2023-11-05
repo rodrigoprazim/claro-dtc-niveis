@@ -13,9 +13,9 @@ Projeto resgatado por: Rodrigo Prazim <rodrigo.prazim@claro.com.br>
 * Utilizado Javascript para automação do frontend e PHP para as consultas ao backend
 
 ## Detalhes
-* Alterar a variaveis de acordo com a sua operação em "variables.php"
+* Alterar as variaveis de acordo com a sua operação em "variables.php"
 
-<br><br>
+<br>
 
 ## Ajude!!!
 Encontrou algum problema? Abra uma issue!!! :wink: <br>
