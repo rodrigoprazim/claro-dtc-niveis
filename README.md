@@ -6,7 +6,7 @@ Desenvolvido por Elicio Junior
 
 ##
 
-Projeto resgatado por: Rodrigo Prazim <rodrigo.prazim@claro.com.br>
+Projeto resgatado por: Rodrigo Prazim
 
 ## Desenvolvimento
 * Sistema desenvolvido em HTML/CSS usando Boostrap 4.7 como framework frontend
