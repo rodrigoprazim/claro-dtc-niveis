@@ -1,6 +1,6 @@
 <?php
 include('variables.php');
-include($vGlobal['dirPath']."ldap_local.php");
+$ds_local = ldap_connect($vGlobal['ip_ldap']);
 
 //set headers to NOT cache a page
 header("Content-type: text/html; charset=utf-8"); //Charset
@@ -14,12 +14,12 @@ function searchContrato($dataSearch){
   $contexto = "dc=".$vGlobal['dc_ldap'];
 
   if (!$ds_local){
-    die ("Impossivel conectar ao server LDAP .... contate o Datacenter");
+    die ("Impossivel conectar ao server LDAP, Contate o Datacenter.");
   }
   
   $r = ldap_bind($ds_local,"uid=datacenter,dc=virtua", "dc2003");
   if ($r == FALSE){
-    die ("Usuario ou senha invalidos ");
+    die ("Usuario ou senha invalidos.");
   }
   
   $sr = ldap_search($ds_local,$contexto,"(&(docsiscontrato=$dataSearch)(objectclass=docsismodem))");
@@ -33,12 +33,12 @@ function searchMacLdap($dataSearch){
   $contexto = "dc=".$vGlobal['dc_ldap'];
 
   if (!$ds_local){
-    die ("Impossivel conectar ao server LDAP .... contate o Datacenter");
+    die("Impossivel conectar ao server LDAP, Contate o Datacenter.");
   }
 
   $r = ldap_bind($ds_local,"uid=datacenter,dc=virtua", "dc2003");
   if ($r == FALSE){
-    die ("Usuario ou senha invalidos ");
+    die("Usuario ou senha invalidos.");
   }
 
   $sr = ldap_search($ds_local,$contexto,"(&(docsismodemmacaddress=$dataSearch)(objectclass=docsismodem))");

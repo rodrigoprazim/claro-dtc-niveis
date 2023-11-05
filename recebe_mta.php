@@ -1,6 +1,6 @@
 <?php
 include('variables.php');
-include($vGlobal['dirPath']."ldap_local.php");
+$ds_local = ldap_connect($vGlobal['ip_ldap']);
 
 //set headers to NOT cache a page
 header("Content-type: text/html; charset=utf-8"); //Charset
@@ -13,12 +13,12 @@ $contexto = "dc=mta,dc=".$vGlobal['dc_ldap'];
 $prog = "/dados/coletor/mta_query";
 
 if (!$ds_local){
-  die ("LDAP: Impossivel conectar ao server... Contate o Datacenter.");
+  die ("Impossivel conectar ao server LDAP, Contate o Datacenter.");
 }
 
 $r = ldap_bind($ds_local,"uid=datacenter,dc=virtua","dc2003");
 if ($r == FALSE){
-  die("LDAP: Usuario ou senha invalidos ");
+  die("LDAP: Usuario ou senha invalidos.");
 }
 
 if ($modem != ""){
