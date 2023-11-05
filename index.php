@@ -113,9 +113,9 @@ body {
   <div id="header">
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">
-            <img src="./assets/img/logo-claro.png" id="claro-logo" alt="claro-logo"/>
-          </a>
+      <a class="navbar-brand" href="javascript:void(0);">
+        <img src="./assets/img/logo-claro.png" id="claro-logo" alt="claro-logo"/>
+      </a>
       <a class="navbar-brand" id="operacao-text" href="javascript:void(0);">Datacenter - Níveis</a>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav" id="navbar-menu">
@@ -158,7 +158,7 @@ body {
   <div id="container">
     <div class="loading">
     </div>
-        <div id="content">
+    <div id="content">
     </div>
   </div>
   <div id="footer">
@@ -251,10 +251,14 @@ body {
               virtuaclassdescription = clientClass;
               virtuaicon = "fa fa-times-circle fa-lg";
             };
+            
+            docsisnode = cable.ldap[0]['docsisnode'][0];
+
           }else{
             virtuaclass = "alert-light";
             virtuaclassdescription = "Sem Contrato";
             virtuaicon = "fa fa-times-circle fa-lg";
+            docsisnode = '';
           }
           if(obj['CMTS']['Ip'] != "NOT FOUND" && obj['CMTS']['Status'] == "Online"){
 
@@ -481,7 +485,7 @@ body {
             htmlData += '               </tr>';
             htmlData += '               <tr>';
             htmlData += '                 <td>Node:</td>';
-            htmlData += '                 <td><b>' + cable.ldap[0]['docsisnode'][0] + '</b>';
+            htmlData += '                 <td><b>' + docsisnode + '</b>';
             htmlData += '                 </td>';
             htmlData += '               </tr>';
             htmlData += '             </tbody>';
@@ -845,7 +849,7 @@ body {
             htmlData += '               </tr>';
             htmlData += '               <tr>';
             htmlData += '                 <td>Node:</td>';
-            htmlData += '                 <td><b>' + cable.ldap[0]['docsisnode'][0] + '</b>';
+            htmlData += '                 <td><b>' + docsisnode + '</b>';
             htmlData += '                 </td>';
             htmlData += '               </tr>';
             htmlData += '             </tbody>';
