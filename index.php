@@ -391,11 +391,18 @@ body {
               for(indexCPE = 1; indexCPE < Object.keys(cpes).length -1; indexCPE++){
                 if(Object.values(cpes)[indexCPE]['IP'] != obj['Cable Modem']['End IP'] && Object.values(cpes)[indexCPE]['IP'] != '0.0.0.0' && Object.values(cpes)[indexCPE]['IP'] != 'N/A'){
                   if(Object.values(cpes)[indexCPE]['IP'].substring(0, 4) != '10.9' || Object.values(cpes)[indexCPE]['IP'].substring(0, 4) != '100.'){
-                    if(Object.values(cpes)[indexCPE]['IP'].substring(0, 3) == '10.' || Object.values(cpes)[indexCPE]['IP'].substring(0, 3) == '11.' || Object.values(cpes)[indexCPE]['IP'].substring(0, 4) == '172.'){
+                    if(clientClass !== "Virtua_TV" && (Object.values(cpes)[indexCPE]['IP'].substring(0, 3) == '10.' || Object.values(cpes)[indexCPE]['IP'].substring(0, 3) == '11.' || Object.values(cpes)[indexCPE]['IP'].substring(0, 4) == '172.')){
                       htmlCPEs += '    <tr>';
                       htmlCPEs += '      <th scope="row">'+indexCPE+'</th>';
                       htmlCPEs += '      <td>'+Object.values(cpes)[indexCPE]['MAC']+'</td>';
                       htmlCPEs += '      <td>'+Object.values(cpes)[indexCPE]['IP']+'&nbsp;&nbsp;<a href="javascript:void(0);" style="color:inherit; text-decoration:inherit;" data-toggle="modal" data-target="#staticBackdropMta" title="Info de MTA"><i class="fa fa-bars" aria-hidden="true"></i></a></td>';
+                      htmlCPEs += '    </tr>';
+                    } else if (clientClass === "Virtua_TV") {
+                      ip_stb = Object.values(cpes)[indexCPE]['IP'];
+                      htmlCPEs += '    <tr>';
+                      htmlCPEs += '      <th scope="row">'+indexCPE+'</th>';
+                      htmlCPEs += '      <td>'+Object.values(cpes)[indexCPE]['MAC']+'</td>';
+                      htmlCPEs += '      <td>'+Object.values(cpes)[indexCPE]['IP']+'&nbsp;&nbsp;<a href="javascript:void(0);" style="color:inherit; text-decoration:inherit;" data-toggle="modal" data-target="#staticBackdropStb" title="Info de STB"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></td>';
                       htmlCPEs += '    </tr>';
                     } else {
                       htmlCPEs += '    <tr>';
@@ -649,6 +656,27 @@ body {
             htmlData += '           </div>';
             htmlData += '         </div>';
             htmlData += '         <!-- END MTA MODAL -->';
+            htmlData += '         <!-- STB MODAL -->';
+            htmlData += '         <div class="modal fade" id="staticBackdropStb" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropStbLabel" aria-hidden="true">';
+            htmlData += '           <div class="modal-dialog">';
+            htmlData += '             <div class="modal-content">';
+            htmlData += '               <div class="modal-header alert alert-warning">';
+            htmlData += '                 <i class="fa fa-youtube-play fa-2x" aria-hidden="true"></i>&nbsp;&nbsp;';
+            htmlData += '                 <h5 class="modal-title" id="staticBackdropStbLabel">Set Top Box</h5>';
+            htmlData += '                 <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">';
+            htmlData += '                   <span aria-hidden="true">&times;</span>';
+            htmlData += '                 </button>';
+            htmlData += '               </div>';
+            htmlData += '               <div class="modal-body">';
+            htmlData += '                 <span id="stbTable"></span>';
+            htmlData += '               </div>';
+            htmlData += '               <div class="modal-footer">';
+            htmlData += '                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
+            htmlData += '               </div>';
+            htmlData += '             </div>';
+            htmlData += '           </div>';
+            htmlData += '         </div>';
+            htmlData += '         <!-- END STB MODAL -->';
             htmlData += '         <!-- OFDM INFO MODAL -->';
             htmlData += '         <div class="modal fade" id="staticBackdropOfdmInfo" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropOfdmInfoLabel" aria-hidden="true">';
             htmlData += '           <div class="modal-dialog modal-dialog-scrollable">';
@@ -896,7 +924,6 @@ body {
             loading_hide();
             $("#content").html(htmlData);
           }
-
           $("#staticBackdropLog").on('show.bs.modal', function(e) {
             var ip_cm = obj['Cable Modem']['End IP'];
             $("#log").empty();
@@ -909,7 +936,6 @@ body {
               $("#log").html(retorna);
             });
           });
-
           $("#staticBackdropHttpUserPass").on('show.bs.modal', function(e) {
             var ip_cm = obj['Cable Modem']['End IP'];
             $("#httpuserpass").empty();
@@ -923,7 +949,18 @@ body {
               $("#httpuserpass").html(retorna);
             });
           });
-
+          $("#staticBackdropStb").on('show.bs.modal', function(e) {
+            var stb_ip = ip_stb;
+            $("#stbTable").empty();
+            loading_modal_show();
+            $.post("ccm/get_infostbcm.php",{
+              ip_stb: stb_ip
+            },
+            function(retorna){
+              loading_modal_hide();
+              $("#stbTable").html(retorna);
+            });
+          });
           $("#staticBackdropUpstreams").on('show.bs.modal', function(e) {
             var upstreams = obj['Cable Modem']['Upstreams'];
             htmlUp = '<table class="table table-sm table-bordered table-hover">';
