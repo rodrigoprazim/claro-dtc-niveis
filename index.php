@@ -297,6 +297,7 @@ body {
             var colorTxModem = "";
             var colorRxModem = "";
             var colorSnrCmts = "";
+            var colorTxOfdma = "";
             
             if(obj['Cable Modem']['Prim. Up TX Level'] >= 40 && obj['Cable Modem']['Prim. Up TX Level'] <= 50){
               colorTxModem = 'green';
@@ -304,6 +305,22 @@ body {
               colorTxModem = '#ffb83e';
             }else{
               colorTxModem = 'red';
+            }
+
+            
+
+            if(docsisversion == 4){
+              if(obj['Docsis 3.1']['Up OFDMA Channels']['Tx Level'] >= 40 && obj['Docsis 3.1']['Up OFDMA Channels']['Tx Level'] <= 50){
+                colorTxOfdma = 'green';
+              }else if(obj['Docsis 3.1']['Up OFDMA Channels']['Tx Level'] >= 30 && obj['Docsis 3.1']['Up OFDMA Channels']['Tx Level'] < 40){
+                colorTxOfdma = '#ffb83e';
+              }else{
+                colorTxOfdma = 'red';
+              }
+              var txOfdma = "Erro";
+              if(obj['Docsis 3.1']['Up OFDMA Channels']['Tx Level'] !== "undefined"){
+                txOfdma = obj['Docsis 3.1']['Up OFDMA Channels']['Tx Level'] + ' dbmV';
+              }
             }
 
             if(obj['Cable Modem']['Downstreams']['Count'] > 0){
@@ -556,7 +573,7 @@ body {
             /* EOF BLOCO OFDM */
             /* BLOCO OFDMA */
               htmlData += '               <tr>';
-              htmlData += '                 <td>OFDMA: <b><font color="green">'+ obj['Docsis 3.1']['Up OFDMA Channels']['Tx Level'] +' dBmV</font></b></td>';
+              htmlData += '                 <td>OFDMA: <b><font color="'+ colorTxOfdma +'">'+ txOfdma +'</font></b></td>';
               htmlData += '                 <td>Up OFDMA Channels:&nbsp;&nbsp;<a href="javascript:void(0);" style="color:inherit; text-decoration:inherit; data-toggle="tooltipOfdmaFreq" title="OFDMA Channel Freq"><i class="fa fa-bars" aria-hidden="true" data-toggle="modal" data-target="#staticBackdropOfdmaFreq"></i></a></td>';
               htmlData += '               </tr>';
             };
@@ -647,6 +664,7 @@ body {
             htmlData += '                 </button>';
             htmlData += '               </div>';
             htmlData += '               <div class="modal-body">';
+            htmlData += '                 <div class="loading_modal"></div>';
             htmlData += '                 <span id="mtaTable"></span>';
             htmlData += '               </div>';
             htmlData += '               <div class="modal-footer">';
@@ -668,6 +686,7 @@ body {
             htmlData += '                 </button>';
             htmlData += '               </div>';
             htmlData += '               <div class="modal-body">';
+            htmlData += '                 <div class="loading_modal"></div>';
             htmlData += '                 <span id="stbTable"></span>';
             htmlData += '               </div>';
             htmlData += '               <div class="modal-footer">';
@@ -754,9 +773,8 @@ body {
             htmlData += '               </div>';
             htmlData += '               <div class="modal-body">';
             htmlData += '                 <div class="container_modal"></div>';
-            htmlData += '                   <div class="loading_modal"></div>';
-            htmlData += '                   <span id="log"></span>';
-            htmlData += '                 </div';
+            htmlData += '                 <div class="loading_modal"></div>';
+            htmlData += '                 <span id="log"></span>';
             htmlData += '               </div>';
             htmlData += '               <div class="modal-footer">';
             htmlData += '                 <div class="btn-group" role="group" aria-label="Group Button Functions">';
@@ -1010,6 +1028,7 @@ body {
             document.getElementById('downstreamsTable').innerHTML = htmlDown;
           });
           $("#staticBackdropMta").on('show.bs.modal', function(e) {
+            loading_modal_show();
             var mta = obj['MTA'];
             $.post("recebe_mta.php",{
               mta_mac: mta['Mac'].toUpperCase()
@@ -1060,6 +1079,7 @@ body {
               htmlMta += '    </tr>';
               htmlMta += '  </tbody>';
               htmlMta += '</table>';
+              loading_modal_hide();
               document.getElementById('mtaTable').innerHTML = htmlMta;
             });
           });
