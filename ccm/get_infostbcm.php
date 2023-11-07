@@ -11,14 +11,33 @@ if(isset($_POST)){
   $htmlStb = '<table class="table table-sm table-bordered table-hover">';
   $htmlStb .= ' <tbody>';
 
-  $permitidos = array('HARDWARE_VERSION','SOFTWARE_VERSION','SMARTCARD','AUTHORISED_SERVICES_TV','USAGE_ID','MODULATION','FREQUENCY','DISK_CAPACITY','DISK_STATUS','DISK_AVAILABLE','AUDIO_LANGUAGE','SUBTITLE_LANGUAGE','QAM_LOCK_STATUS','HDMI_OUTPUT','CURRENT_SERVICE_ID','HDMI_CONECT','QAM_INPUT_POWER_LEVEL_PERCENT','QAM_SIGNAL_QUALITY_LEVEL_PERCENT');
+  $permitidos = array(
+    'HARDWARE_VERSION' => 'Versão do Hardware',
+    'SOFTWARE_VERSION' => 'Versão do Software',
+    'SMARTCARD' => 'Smartcard',
+    'AUTHORISED_SERVICES_TV' => 'Serviços de TV',
+    'USAGE_ID' => 'Update ID',
+    'MODULATION' => 'Modulação',
+    'FREQUENCY' => 'Frequencia',
+    'DISK_CAPACITY' => 'Capacidade do HD',
+    'DISK_STATUS' => 'Status do HD',
+    'DISK_AVAILABLE' => 'Espaço disponível no HD',
+    'AUDIO_LANGUAGE' => 'Idioma Audio',
+    'SUBTITLE_LANGUAGE' => 'Idioma Legenda',
+    'QAM_LOCK_STATUS' => 'QAM',
+    'HDMI_OUTPUT' => 'Saida HDMI',
+    'CURRENT_SERVICE_ID' => 'Canal Sintonizado',
+    'HDMI_CONECT' => 'HDMI Conectado',
+    'QAM_INPUT_POWER_LEVEL_PERCENT' => 'PS',
+    'QAM_SIGNAL_QUALITY_LEVEL_PERCENT' => 'QS'
+  );
 
-  for ($i = 0; $i < count($array); $i++){
-    $dados_ex = explode("=",$array[$i]);
-    $key = array_search(trim($dados_ex[0]), $permitidos);
+  foreach($array as $chave => $valor){
+    $dados_ex = explode("=",$valor);
+    $key = array_search(trim($dados_ex[0]), array_keys($permitidos));
     if($key !== FALSE){
       $htmlStb .= '    <tr>';
-      $htmlStb .= '      <th scope="row">'.trim($dados_ex[0]).'</th>';
+      $htmlStb .= '      <th scope="row">'.$permitidos[trim($dados_ex[0])].'</th>';
       $htmlStb .= '      <td nowrap="nowrap">'.trim($dados_ex[1]).'</td>';
       $htmlStb .= '    </tr>';
     }

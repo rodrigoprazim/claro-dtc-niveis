@@ -356,7 +356,6 @@ body {
               cmtsIp: obj['CMTS']['Ip'],
               interface: obj['CMTS']['Primary UP']
             },function(res){
-              res = res + ' dBmV';
               $(".snrUp").html(res);
             });
             $('[data-toggle="tooltipUp"]').tooltip();
@@ -550,7 +549,7 @@ body {
             htmlData += '               </tr>';
             htmlData += '               <tr>';
             htmlData += '                 <td>Vendor: <b>' + obj['Cable Modem']['Vendor'] + '</b></td>';
-            htmlData += '                 <td>Sinal/Ruído: <b><font color="green"><span class="snrUp"></span></font></b></td>';
+            htmlData += '                 <td>Sinal/Ruído: <b><span class="snrUp"></span></b></td>';
             htmlData += '               </tr>';
             htmlData += '               <tr>';
             htmlData += '                 <td>Modelo: <b>' + obj['Cable Modem']['Modelo'] + '</b></td>';
@@ -654,7 +653,7 @@ body {
             htmlData += '         <!-- END DOWNSTREAM MODAL -->';
             htmlData += '         <!-- MTA MODAL -->';
             htmlData += '         <div class="modal fade" id="staticBackdropMta" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropMtaLabel" aria-hidden="true">';
-            htmlData += '           <div class="modal-dialog modal-xl">';
+            htmlData += '           <div class="modal-dialog">';
             htmlData += '             <div class="modal-content">';
             htmlData += '               <div class="modal-header alert alert-danger">';
             htmlData += '                 <i class="fa fa-phone fa-2x" aria-hidden="true"></i>&nbsp;&nbsp;';
@@ -982,7 +981,7 @@ body {
           $("#staticBackdropUpstreams").on('show.bs.modal', function(e) {
             var upstreams = obj['Cable Modem']['Upstreams'];
             htmlUp = '<table class="table table-sm table-bordered table-hover">';
-            htmlUp += '   <thead class="thead-dark">';
+            htmlUp += ' <thead class="thead-dark">';
             htmlUp += '   <tr>';
             htmlUp += '     <th scope="col">#</th>';
             htmlUp += '     <th scope="col">Frequencia</th>';
@@ -992,21 +991,21 @@ body {
             htmlUp += ' </thead>';
             htmlUp += ' <tbody>';
             for(indexUp = 1; indexUp < Object.keys(upstreams).length - 1; indexUp++){
-              htmlUp += '    <tr>';
-              htmlUp += '      <th scope="row">'+indexUp+'</th>';
-              htmlUp += '      <td>'+(Object.values(upstreams)[indexUp]['Freq'])/1000000+' MHz</td>';
-              htmlUp += '      <td>'+Object.values(upstreams)[indexUp]['TX Level']+'</td>';
-              htmlUp += '      <td>'+(Object.values(upstreams)[indexUp]['Width'])/1000000+' MHz</td>';
-              htmlUp += '    </tr>';
+              htmlUp += '   <tr>';
+              htmlUp += '     <th scope="row">'+indexUp+'</th>';
+              htmlUp += '     <td>'+(Object.values(upstreams)[indexUp]['Freq'])/1000000+' MHz</td>';
+              htmlUp += '     <td>'+Object.values(upstreams)[indexUp]['TX Level']+'</td>';
+              htmlUp += '     <td>'+(Object.values(upstreams)[indexUp]['Width'])/1000000+' MHz</td>';
+              htmlUp += '   </tr>';
             };
-            htmlUp += '  </tbody>';
+            htmlUp += ' </tbody>';
             htmlUp += '</table>';
             document.getElementById('upstreamsTable').innerHTML = htmlUp;
           });
           $("#staticBackdropDownstreams").on('show.bs.modal', function(e) {
             var downstreams = obj['Cable Modem']['Downstreams'];
             htmlDown = '<table class="table table-sm table-bordered table-hover">';
-            htmlDown += '   <thead class="thead-dark">';
+            htmlDown += ' <thead class="thead-dark">';
             htmlDown += '   <tr>';
             htmlDown += '     <th scope="col">#</th>';
             htmlDown += '     <th scope="col">Frequencia</th>';
@@ -1016,14 +1015,14 @@ body {
             htmlDown += ' </thead>';
             htmlDown += ' <tbody>';
             for(indexDown = 1; indexDown < Object.keys(downstreams).length - 1; indexDown++){
-              htmlDown += '    <tr>';
-              htmlDown += '      <th scope="row">'+indexDown+'</th>';
-              htmlDown += '      <td>'+(Object.values(downstreams)[indexDown]['Freq'])/1000000+' MHz</td>';
-              htmlDown += '      <td>'+Object.values(downstreams)[indexDown]['RX Level']+'</td>';
-              htmlDown += '      <td>'+Object.values(downstreams)[indexDown]['SNR']+'</td>';
-              htmlDown += '    </tr>';
+              htmlDown += '   <tr>';
+              htmlDown += '     <th scope="row">'+indexDown+'</th>';
+              htmlDown += '     <td>'+(Object.values(downstreams)[indexDown]['Freq'])/1000000+' MHz</td>';
+              htmlDown += '     <td>'+Object.values(downstreams)[indexDown]['RX Level']+'</td>';
+              htmlDown += '     <td>'+Object.values(downstreams)[indexDown]['SNR']+'</td>';
+              htmlDown += '   </tr>';
             };
-            htmlDown += '  </tbody>';
+            htmlDown += ' </tbody>';
             htmlDown += '</table>';
             document.getElementById('downstreamsTable').innerHTML = htmlDown;
           });
@@ -1036,45 +1035,53 @@ body {
             function(retorna){
               let mta_data = JSON.parse(retorna);
               htmlMta = '<table class="table table-sm table-bordered table-hover">';
-              htmlMta += '   <thead class="thead-dark">';
-              htmlMta += '   <tr>';
-              htmlMta += '     <th scope="col">FQDN</th>';
-              htmlMta += '     <th scope="col">MTA Mac</th>';
-              htmlMta += '     <th scope="col">Policy Name</th>';
-              htmlMta += '     <th scope="col">Prov</th>';
-              if(mta['Rsip Line1'] == '1'){
-                htmlMta += '     <th scope="col">Linha 1</th>';
-                htmlMta += '     <th scope="col">Tel 1</th>';
-              };
-              if(mta['Rsip Line2'] == '1'){
-                htmlMta += '     <th scope="col">Linha 2</th>';
-                htmlMta += '     <th scope="col">Tel 1</th>';
-              };
-              htmlMta += '     <th scope="col">Soft Switch</th>';
-              htmlMta += '   </tr>';
-              htmlMta += ' </thead>';
-              htmlMta += ' <tbody>';
+              htmlMta += '  <tbody>';
               htmlMta += '    <tr>';
-              htmlMta += '      <th scope="row">'+mta['FQDN']+'</th>';
-              htmlMta += '      <th>'+mta['Mac'].toUpperCase()+'</th>';
-              htmlMta += '      <th>'+mta_data['policy_name']+'</th>';
+              htmlMta += '      <th scope="col">FQDN</th>';
+              htmlMta += '      <td nowrap="nowrap"><b>'+mta['FQDN']+'</b></td>';
+              htmlMta += '    </tr>';
+              htmlMta += '    <tr>';
+              htmlMta += '      <th scope="col">MTA MAC</th>';
+              htmlMta += '      <td nowrap="nowrap"><b>'+mta['Mac'].toUpperCase()+'</b></td>';
+              htmlMta += '    </tr>';
+              htmlMta += '    <tr>';
+              htmlMta += '      <th scope="col">Policy Name</th>';
+              htmlMta += '      <td nowrap="nowrap"><b>'+mta_data['policy_name']+'</b></td>';
+              htmlMta += '    </tr>';
+              htmlMta += '    <tr>';
+              htmlMta += '      <th scope="col">Provisionamento</th>';
               if(mta['Prov State'] == '4'){
-                htmlMta += '      <td><font color="green"><b>OK</b></font></td>';
+                htmlMta += '    <td><font color="green"><b>OK</b></font></td>';
               } else {
-                htmlMta += '      <td><font color="red"><b>FALHA</b></font></td>';
+                htmlMta += '    <td><font color="red"><b>FALHA</b></font></td>';
               };
+              htmlMta += '    </tr>';
               if(mta['Rsip Line1'] == '1'){
+                htmlMta += '    <tr>';
+                htmlMta += '      <th scope="col">Linha 1</th>';
                 htmlMta += '      <td><font color="green"><b>OK</b></font></td>';
+                htmlMta += '    </tr>';
+                htmlMta += '    <tr>';
+                htmlMta += '      <th scope="col">Tel 1</th>';
                 htmlMta += '      <td><font color="green"><b>'+mta_data['num_tel1']+'</b></font></td>';
+                htmlMta += '    </tr>';
               };
               if(mta['Rsip Line2'] == '1'){
+                htmlMta += '    <tr>';
+                htmlMta += '      <th scope="col">Linha 2</th>';
                 htmlMta += '      <td><font color="green"><b>OK</b></font></td>';
+                htmlMta += '    </tr>';
+                htmlMta += '    <tr>';
+                htmlMta += '      <th scope="col">Tel 1</th>';
                 htmlMta += '      <td><font color="green"><b>'+mta_data['num_tel2']+'</b></font></td>';
+                htmlMta += '    </tr>';
               };
+              htmlMta += '    <tr>';
+              htmlMta += '     <th scope="col">SoftSwitch</th>';
               if(mta_data['dns']){
-                htmlMta += '      <td><font color="green"><b>OK</b></font></td>';
+                htmlMta += '   <td><font color="green"><b>OK</b></font></td>';
               } else {
-                htmlMta += '      <td><font color="red"><b>FALHA</b></font></td>';
+                htmlMta += '   <td><font color="red"><b>FALHA</b></font></td>';
               };
               htmlMta += '    </tr>';
               htmlMta += '  </tbody>';
@@ -1095,12 +1102,13 @@ body {
             htmlOfdmInfo += '   </tr>';
             htmlOfdmInfo += ' </thead>';
             htmlOfdmInfo += ' <tbody>';
-            htmlOfdmInfo += '      <td>'+ofdm['OFDM #0']['Chan Slope']+'</td>';
-            htmlOfdmInfo += '      <td>'+ofdm['OFDM #0']['Index']+'</td>';
-            htmlOfdmInfo += '      <td>'+ofdm['OFDM #0']['RxMer (Mean)']+'</td>';
-            htmlOfdmInfo += '      <td>'+ofdm['OFDM #0']['RxMer (Stddev)']+'</td>';
-            htmlOfdmInfo += '    </tr>';
-            htmlOfdmInfo += '  </tbody>';
+            htmlOfdmInfo += '   <tr>';
+            htmlOfdmInfo += '     <td>'+ofdm['OFDM #0']['Chan Slope']+'</td>';
+            htmlOfdmInfo += '     <td>'+ofdm['OFDM #0']['Index']+'</td>';
+            htmlOfdmInfo += '     <td>'+ofdm['OFDM #0']['RxMer (Mean)']+'</td>';
+            htmlOfdmInfo += '     <td>'+ofdm['OFDM #0']['RxMer (Stddev)']+'</td>';
+            htmlOfdmInfo += '  </tr>';
+            htmlOfdmInfo += ' </tbody>';
             htmlOfdmInfo += '</table>';
             document.getElementById('ofdmInfoTable').innerHTML = htmlOfdmInfo;
           });
@@ -1116,10 +1124,11 @@ body {
             htmlOfdmFreq += ' </thead>';
             htmlOfdmFreq += ' <tbody>';
             for(indexOfdm = 0; indexOfdm < Object.values(ofdm)[1]['6MHz Slices']['Count']; indexOfdm++){
-              htmlOfdmFreq += '      <td>'+indexOfdm+'</td>';
-              htmlOfdmFreq += '      <td>'+(Object.values(ofdm)[1]['6MHz Slices']['Slice '+indexOfdm+'']['Cfreq'])/1000000+' MHz</td>';
-              htmlOfdmFreq += '      <td>'+Object.values(ofdm)[1]['6MHz Slices']['Slice '+indexOfdm+'']['RX Power']+'</td>';
-              htmlOfdmFreq += '    </tr>';
+              htmlOfdmFreq += '   <tr>';
+              htmlOfdmFreq += '     <td>'+indexOfdm+'</td>';
+              htmlOfdmFreq += '     <td>'+(Object.values(ofdm)[1]['6MHz Slices']['Slice '+indexOfdm+'']['Cfreq'])/1000000+' MHz</td>';
+              htmlOfdmFreq += '     <td>'+Object.values(ofdm)[1]['6MHz Slices']['Slice '+indexOfdm+'']['RX Power']+'</td>';
+              htmlOfdmFreq += '   </tr>';
             };
             htmlOfdmFreq += '  </tbody>';
             htmlOfdmFreq += '</table>';
@@ -1128,13 +1137,14 @@ body {
           $("#staticBackdropOfdmaFreq").on('show.bs.modal', function(e) {
             var ofdma = obj['Docsis 3.1']['Up OFDMA Channels'];
             htmlOfdmaFreq = '<table class="table table-sm table-bordered table-hover">';
-            htmlOfdmaFreq += '   <thead class="thead-dark">';
-            htmlOfdmaFreq += '   <tr>';
+            htmlOfdmaFreq += '  <thead class="thead-dark">';
+            htmlOfdmaFreq += '    <tr>';
             htmlOfdmaFreq += '     <th scope="col">Frequencia Base</th>';
             htmlOfdmaFreq += '     <th scope="col">Channel Width</th>';
-            htmlOfdmaFreq += '   </tr>';
-            htmlOfdmaFreq += ' </thead>';
-            htmlOfdmaFreq += ' <tbody>';
+            htmlOfdmaFreq += '    </tr>';
+            htmlOfdmaFreq += '  </thead>';
+            htmlOfdmaFreq += '  <tbody>';
+            htmlOfdmaFreq += '    <tr>';
             htmlOfdmaFreq += '      <td>'+(ofdma['Base Freq.'])/1000000+' MHz</td>';
             htmlOfdmaFreq += '      <td>'+(ofdma['Channel Width'])/1000000+' MHz</td>';
             htmlOfdmaFreq += '    </tr>';

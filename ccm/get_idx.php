@@ -33,12 +33,17 @@ if(!preg_match("|".$interface."|",$if_desc)){
 $if_snr = shell_exec("/usr/local/bin/snmpget -v2c -c ".$vGlobal['community_cmts']." ".$cmtsIp." .1.3.6.1.2.1.10.127.1.1.4.1.5.".$if_idxs[$cmtsName][$interface]);
 
 preg_match("/^.*=\s*INTEGER:\s*([^=]+)$/",$if_snr,$match);
+
 $if_snr = $match[1]/10;
 
 //Check empty variable
-if($if_snr == "" || $if_snr == null){
-  print "undefined";
+if(empty($if_snr)){
+  print '<font color="red">Erro</font>';
 } else {
-  print $if_snr;
+  if($if_snr >= 35){
+    print '<font color="green">'.$if_snr.' dbmV</font>';
+  }else{
+    print '<font color="red">'.$if_snr.' dbmV</font>';
+  }
 }
 ?>
