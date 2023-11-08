@@ -32,16 +32,34 @@ if(isset($_POST)){
     'QAM_SIGNAL_QUALITY_LEVEL_PERCENT' => 'QS'
   );
 
+  $filename = "channels.json";
+
+  $handle = fopen($filename, "r");
+  
+  $contents = fread($handle, filesize($filename));
+  $json = (array) json_decode($contents);
+
   foreach($array as $chave => $valor){
     $dados_ex = explode("=",$valor);
     $key = array_search(trim($dados_ex[0]), array_keys($permitidos));
     if($key !== FALSE){
+      if(trim($dados_ex[0]) == 'CURRENT_SERVICE_ID'){
+        if(isset($json['channels']->{trim($dados_ex[1])})){
+          $value_ = '('.trim($dados_ex[1]).') <b>'.$json['channels']->{trim($dados_ex[1])}->channel_name.'</b>';
+        }else{
+          $value_ = trim($dados_ex[1]);
+        }
+      }else{
+        $value_ = trim($dados_ex[1]);
+      }
       $htmlStb .= '    <tr>';
       $htmlStb .= '      <th scope="row">'.$permitidos[trim($dados_ex[0])].'</th>';
-      $htmlStb .= '      <td nowrap="nowrap">'.trim($dados_ex[1]).'</td>';
+      $htmlStb .= '      <td nowrap="nowrap">'.$value_.'</td>';
       $htmlStb .= '    </tr>';
     }
   }
+
+  fclose($handle);
 
   $htmlStb .= '  </tbody>';
   $htmlStb .= '</table>';
