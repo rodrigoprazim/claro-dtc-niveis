@@ -137,13 +137,17 @@ body {
       </div>
       <!-- Formulário de consulta de cable -->
       <div id="form-Consulta">
-        <div id="clearInputField" style="display:none;">
-          <button type="button" class="btn btn-outline-danger" id="clearInput">Limpar</button>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <button type="button" style="display:none;" class="btn btn-outline-danger btn-sm" id="clearInput">Limpar</button>
+          </div>
+          <div id="type-Consulta" class="inputConsulta">
+            <input class="form-control form-control-sm mr-sm-2 input-Consulta" id="inputSearchField" type="search" name="input-Consulta" placeholder="MAC ou Contrato" aria-label="Search"/>
+          </div>
+          <div class="input-group-append">
+            <button type="button" class="btn btn-outline-success btn-sm" id="btn-Consulta" name="btn-Consulta">Consulta</button>
+          </div>
         </div>
-        <div id="type-Consulta" class="inputConsulta">
-          <input class="form-control mr-sm-2 input-Consulta" id="inputSearchField" type="search" name="input-Consulta" placeholder="MAC ou Contrato" aria-label="Search"/>
-        </div>
-        <button class="btn btn-outline-success btn-sm" id="btn-Consulta" name="btn-Consulta">Consulta</button>
       </div>
           <!-- Dark Theme Toglle -->
       <div class="custom-control custom-switch">
@@ -182,11 +186,10 @@ body {
     };
     //Limpa o campo de busca por contrato
     $("#clearInput").click(function(){
-      //$("#content").empty();
       $("input").trigger('reset');
       $('#selectSearchField').css("display", "none");
-      $('#type-Consulta').html('<input class="form-control mr-sm-2 input-Consulta" id="inputSearchField" type="search" name="input-Consulta" placeholder="MAC ou Contrato" aria-label="Search" value=""/>');
-      $('#clearInputField').css("display", "none");
+      $('#type-Consulta').html('<input class="form-control form-control-sm mr-sm-2 input-Consulta" id="inputSearchField" type="search" name="input-Consulta" placeholder="MAC ou Contrato" aria-label="Search" value=""/>');
+      $('#clearInput').css("display", "none");
     });
     //Aqui funcao que busca a pagina desejada pelo usuario
     $(".busca").click(function(){
@@ -624,7 +627,7 @@ body {
             htmlData += '                 <span id="upstreamsTable"></span>';
             htmlData += '               </div>';
             htmlData += '               <div class="modal-footer">';
-            htmlData += '                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
+            htmlData += '                 <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
             htmlData += '               </div>';
             htmlData += '             </div>';
             htmlData += '           </div>';
@@ -645,7 +648,7 @@ body {
             htmlData += '                 <span id="downstreamsTable"></span>';
             htmlData += '               </div>';
             htmlData += '               <div class="modal-footer">';
-            htmlData += '                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
+            htmlData += '                 <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
             htmlData += '               </div>';
             htmlData += '             </div>';
             htmlData += '           </div>';
@@ -667,7 +670,7 @@ body {
             htmlData += '                 <span id="mtaTable"></span>';
             htmlData += '               </div>';
             htmlData += '               <div class="modal-footer">';
-            htmlData += '                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
+            htmlData += '                 <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
             htmlData += '               </div>';
             htmlData += '             </div>';
             htmlData += '           </div>';
@@ -689,7 +692,7 @@ body {
             htmlData += '                 <span id="stbTable"></span>';
             htmlData += '               </div>';
             htmlData += '               <div class="modal-footer">';
-            htmlData += '                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
+            htmlData += '                 <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
             htmlData += '               </div>';
             htmlData += '             </div>';
             htmlData += '           </div>';
@@ -710,7 +713,7 @@ body {
             htmlData += '                 <span id="ofdmInfoTable"></span>';
             htmlData += '               </div>';
             htmlData += '               <div class="modal-footer">';
-            htmlData += '                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
+            htmlData += '                 <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
             htmlData += '               </div>';
             htmlData += '             </div>';
             htmlData += '           </div>';
@@ -731,7 +734,7 @@ body {
             htmlData += '                 <span id="OfdmFreqTable"></span>';
             htmlData += '               </div>';
             htmlData += '               <div class="modal-footer">';
-            htmlData += '                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
+            htmlData += '                 <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
             htmlData += '               </div>';
             htmlData += '             </div>';
             htmlData += '           </div>';
@@ -752,7 +755,7 @@ body {
             htmlData += '                 <span id="OfdmaFreqTable"></span>';
             htmlData += '               </div>';
             htmlData += '               <div class="modal-footer">';
-            htmlData += '                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
+            htmlData += '                 <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
             htmlData += '               </div>';
             htmlData += '             </div>';
             htmlData += '           </div>';
@@ -777,8 +780,8 @@ body {
             htmlData += '               </div>';
             htmlData += '               <div class="modal-footer">';
             htmlData += '                 <div class="btn-group" role="group" aria-label="Group Button Functions">';
-            htmlData += '                   <button type="button" class="btn btn-outline-danger" id="clearlog"><i class="fa fa-eraser" aria-hidden="true"></i> Limpar Log</button>';
-            htmlData += '                   <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
+            htmlData += '                   <button type="button" class="btn btn-outline-danger btn-sm" id="clearlog"><i class="fa fa-eraser" aria-hidden="true"></i> Limpar Log</button>';
+            htmlData += '                   <button type="button" class="btn btn-outline-secondary btn-sm" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
             htmlData += '                 </div>';
             htmlData += '               </div>';
             htmlData += '             </div>';
@@ -805,7 +808,7 @@ body {
             htmlData += '               </div>';
             htmlData += '               <div class="modal-footer">';
             htmlData += '                 <div class="btn-group" role="group" aria-label="Group Button Functions">';
-            htmlData += '                   <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
+            htmlData += '                   <button type="button" class="btn btn-outline-secondary btn-sm" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
             htmlData += '                 </div>';
             htmlData += '               </div>';
             htmlData += '             </div>';
@@ -923,7 +926,7 @@ body {
                 })
                 option += '</select>';
                 document.getElementById('type-Consulta').innerHTML = option;
-                document.getElementById('clearInputField').style.display = "block";
+                document.getElementById('clearInput').style.display = "block";
               }else{
                 $("#content").empty();
                 htmlData  = '<div class="container-fluid">';
@@ -1221,7 +1224,7 @@ body {
           var obj = JSON.parse(retorna);
           if (obj.count > 0){
             $("#content").empty();
-            var option = '<select class="custom-select input-Consulta" id="selectSearchField">';
+            var option = '<select class="form-control form-control-sm input-Consulta" id="selectSearchField">';
             $.each(obj, function(i, info){
               if(i != 'count'){
                 var mac = info['docsismodemmacaddress']['0'].replace(/1,6,|:/g, "");
@@ -1230,7 +1233,7 @@ body {
             })
             option += '</select>';
             document.getElementById('type-Consulta').innerHTML = option;
-            document.getElementById('clearInputField').style.display = "block";
+            document.getElementById('clearInput').style.display = "block";
           }else{
             $("#content").empty();
             htmlData  = '<div class="container-fluid">';
