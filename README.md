@@ -1,9 +1,9 @@
 # [Claro] DTC Niveis
 
-Nova modelo de página Data Center com suporte a:
+Novo modelo de página Datacenter com suporte a:
 * Docsis 3.0
 * Docsis 3.1 (OFDM | OFDMA)
-* Decoder
+* Decoder (QAM)
 
 Desenvolvido por Elicio Junior
 
