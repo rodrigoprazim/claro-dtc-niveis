@@ -417,11 +417,10 @@ body {
                       htmlCPEs += '      <td>'+Object.values(cpes)[indexCPE]['IP']+'&nbsp;&nbsp;<a href="javascript:void(0);" style="color:inherit; text-decoration:inherit;" data-toggle="modal" data-target="#staticBackdropMta" title="Info de MTA"><i class="fa fa-bars" aria-hidden="true"></i></a></td>';
                       htmlCPEs += '    </tr>';
                     } else if (clientClass === "Virtua_TV") {
-                      ip_stb = Object.values(cpes)[indexCPE]['IP'];
                       htmlCPEs += '    <tr>';
                       htmlCPEs += '      <th scope="row">'+indexCPE+'</th>';
                       htmlCPEs += '      <td>'+Object.values(cpes)[indexCPE]['MAC']+'</td>';
-                      htmlCPEs += '      <td>'+Object.values(cpes)[indexCPE]['IP']+'&nbsp;&nbsp;<a href="javascript:void(0);" style="color:inherit; text-decoration:inherit;" data-toggle="modal" data-target="#staticBackdropStb" title="Info de STB"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></td>';
+                      htmlCPEs += '      <td>'+Object.values(cpes)[indexCPE]['IP']+'&nbsp;&nbsp;<a href="javascript:void(0);" style="color:inherit; text-decoration:inherit;" data-ip-stb="'+ Object.values(cpes)[indexCPE]['IP'] +'" data-toggle="modal" data-target="#staticBackdropStb" title="Info de STB"><i class="fa fa-tv" aria-hidden="true"></i></a></td>';
                       htmlCPEs += '    </tr>';
                     } else {
                       htmlCPEs += '    <tr>';
@@ -681,7 +680,7 @@ body {
             htmlData += '           <div class="modal-dialog">';
             htmlData += '             <div class="modal-content">';
             htmlData += '               <div class="modal-header alert alert-warning">';
-            htmlData += '                 <i class="fa fa-youtube-play fa-2x" aria-hidden="true"></i>&nbsp;&nbsp;';
+            htmlData += '                 <i class="fa fa-tv fa-2x" aria-hidden="true"></i>&nbsp;&nbsp;';
             htmlData += '                 <h5 class="modal-title" id="staticBackdropStbLabel">Set Top Box</h5>';
             htmlData += '                 <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">';
             htmlData += '                   <span aria-hidden="true">&times;</span>';
@@ -970,7 +969,8 @@ body {
             });
           });
           $("#staticBackdropStb").on('show.bs.modal', function(e) {
-            var stb_ip = ip_stb;
+            var data_ = $(e.relatedTarget)
+            var stb_ip = data_.data('ip-stb')
             $("#stbTable").empty();
             loading_modal_show();
             $.post("ccm/get_infostbcm.php",{
