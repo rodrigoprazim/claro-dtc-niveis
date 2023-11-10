@@ -1030,6 +1030,7 @@ body {
             document.getElementById('downstreamsTable').innerHTML = htmlDown;
           });
           $("#staticBackdropMta").on('show.bs.modal', function(e) {
+            $("#mtaTable").empty();
             loading_modal_show();
             var mta = obj['MTA'];
             $.post("recebe_mta.php",{
@@ -1090,7 +1091,7 @@ body {
               htmlMta += '  </tbody>';
               htmlMta += '</table>';
               loading_modal_hide();
-              document.getElementById('mtaTable').innerHTML = htmlMta;
+              $("#mtaTable").html(htmlMta);
             });
           });
           $("#staticBackdropOfdmInfo").on('show.bs.modal', function(e) {

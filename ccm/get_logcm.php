@@ -3,6 +3,7 @@ if(isset($_POST)){
   $ip_cm = $_POST["ip_cm"];
   $str = "/dados/coletor/get_log -m ".$ip_cm;
   exec($str, $array);
+  
   $htmlLog = '<table class="table table-sm table-bordered table-hover">';
   $htmlLog .= ' <thead class="thead-dark">';
   $htmlLog .= '   <tr>';
