@@ -85,6 +85,7 @@ body {
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
 }
+
 .loader::after {
   content: '';  
   box-sizing: border-box;
@@ -98,6 +99,7 @@ body {
   border-bottom: 4px solid transparent;
   animation: rotation 0.5s linear infinite reverse;
 }
+
 @keyframes rotation {
   0% {
     transform: rotate(0deg);
@@ -310,19 +312,32 @@ body {
               colorTxModem = 'red';
             }
 
-            
-
             if(docsisversion == 4){
-              if(obj['Docsis 3.1']['Up OFDMA Channels']['Tx Level'] >= 40 && obj['Docsis 3.1']['Up OFDMA Channels']['Tx Level'] <= 50){
-                colorTxOfdma = 'green';
-              }else if(obj['Docsis 3.1']['Up OFDMA Channels']['Tx Level'] >= 30 && obj['Docsis 3.1']['Up OFDMA Channels']['Tx Level'] < 40){
-                colorTxOfdma = '#ffb83e';
+              var txOfdma = "Erro";
+              var statusOfdm = '<b><font color="red">Erro</font></b>'
+              var linkOfdm = '<b><font color="red">Erro</font></b>'
+              var linkOfdma = '<b><font color="red">Erro</font></b>'
+
+              if(obj['Docsis 3.1'] != "N/A"){
+                
+                statusOfdm = '<b><font color="green">OK</font></b> <a href="javascript:void(0);" style="color:inherit; text-decoration:inherit; data-toggle="tooltipOfdmInfo" title="OFDM Channel Info"><i class="fa fa-bars" aria-hidden="true" data-toggle="modal" data-target="#staticBackdropOfdmInfo"></i></a>'
+                linkOfdm = '<a href="javascript:void(0);" style="color:inherit; text-decoration:inherit; data-toggle="tooltipOfdmFreq" title="OFDM Channel Freq"><i class="fa fa-bars" aria-hidden="true" data-toggle="modal" data-target="#staticBackdropOfdmFreq"></i></a>'
+                linkOfdma = '<a href="javascript:void(0);" style="color:inherit; text-decoration:inherit; data-toggle="tooltipOfdmaFreq" title="OFDMA Channel Freq"><i class="fa fa-bars" aria-hidden="true" data-toggle="modal" data-target="#staticBackdropOfdmaFreq"></i></a>'
+
+                if(typeof obj['Docsis 3.1']['Up OFDMA Channels']['Tx Level'] !== "undefined"){
+                  txOfdma = obj['Docsis 3.1']['Up OFDMA Channels']['Tx Level'] + ' dbmV';
+
+                  if(obj['Docsis 3.1']['Up OFDMA Channels']['Tx Level'] >= 40 && obj['Docsis 3.1']['Up OFDMA Channels']['Tx Level'] <= 50){
+                    colorTxOfdma = 'green';
+                  }else if(obj['Docsis 3.1']['Up OFDMA Channels']['Tx Level'] >= 30 && obj['Docsis 3.1']['Up OFDMA Channels']['Tx Level'] < 40){
+                    colorTxOfdma = '#ffb83e';
+                  }else{
+                    colorTxOfdma = 'red';
+                  }
+                }
               }else{
                 colorTxOfdma = 'red';
-              }
-              var txOfdma = "Erro";
-              if(obj['Docsis 3.1']['Up OFDMA Channels']['Tx Level'] !== "undefined"){
-                txOfdma = obj['Docsis 3.1']['Up OFDMA Channels']['Tx Level'] + ' dbmV';
+                colorStatusOfdm = 'red';
               }
             }
 
@@ -566,16 +581,16 @@ body {
             htmlData += '                 <td>Profile LDAP: <b>' + policyname + '</b></td>';
             htmlData += '               </tr>';
             /* BLOCO OFDM */
-            if(docsisversion == 4){
+            if(docsisversion == 4 && obj['Docsis 3.1'] != "N/A"){
               htmlData += '               <tr>';
-              htmlData += '                 <td>OFDM: <b><font color="green">OK</font></b>&nbsp;&nbsp;<a href="javascript:void(0);" style="color:inherit; text-decoration:inherit; data-toggle="tooltipOfdmInfo" title="OFDM Channel Info"><i class="fa fa-bars" aria-hidden="true" data-toggle="modal" data-target="#staticBackdropOfdmInfo"></i></a></td>';
-              htmlData += '                 <td>Down OFDM Channels:&nbsp;&nbsp;<a href="javascript:void(0);" style="color:inherit; text-decoration:inherit; data-toggle="tooltipOfdmFreq" title="OFDM Channel Freq"><i class="fa fa-bars" aria-hidden="true" data-toggle="modal" data-target="#staticBackdropOfdmFreq"></i></a></td>';
+              htmlData += '                 <td>OFDM: '+ statusOfdm +'</td>';
+              htmlData += '                 <td>Down OFDM Channels: '+ linkOfdm +'</td>';
               htmlData += '               </tr>';
             /* EOF BLOCO OFDM */
             /* BLOCO OFDMA */
               htmlData += '               <tr>';
               htmlData += '                 <td>OFDMA: <b><font color="'+ colorTxOfdma +'">'+ txOfdma +'</font></b></td>';
-              htmlData += '                 <td>Up OFDMA Channels:&nbsp;&nbsp;<a href="javascript:void(0);" style="color:inherit; text-decoration:inherit; data-toggle="tooltipOfdmaFreq" title="OFDMA Channel Freq"><i class="fa fa-bars" aria-hidden="true" data-toggle="modal" data-target="#staticBackdropOfdmaFreq"></i></a></td>';
+              htmlData += '                 <td>Up OFDMA Channels: '+ linkOfdma +'</td>';
               htmlData += '               </tr>';
             };
             /* EOF BLOCO OFDMA */
