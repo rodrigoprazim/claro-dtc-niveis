@@ -372,7 +372,8 @@ body {
             var snrUp = '';
             $.post("ccm/get_idx.php",{
               cmtsIp: obj['CMTS']['Ip'],
-              interface: obj['CMTS']['Primary UP']
+              interface: obj['CMTS']['Primary UP'],
+              idx_primary: obj['CMTS']['Primary Up Idx']
             },function(res){
               $(".snrUp").html(res);
             });
