@@ -225,7 +225,7 @@ body {
         },
         function(retorna){
           var cable = JSON.parse(retorna);
-          var cableSanitized = cable.docsis.replace(/'/g, '"');
+          var cableSanitized = cable.docsis.replace(/'/g,'"');
           var obj = JSON.parse(cableSanitized);
           //console.log(obj);
           if(typeof cable.ldap[0] !== "undefined"){
@@ -234,11 +234,11 @@ body {
             if (clientClass === "Virtua") {
               virtuaclass = "alert-success";
               virtuaclassdescription = "Virtua";
-              virtuaicon = "fa fa-desktop fa-lg";
+              virtuaicon = "fa fa-wifi fa-lg";
             } else if (clientClass === "Virtua_NAT") {
               virtuaclass = "alert-info";
               virtuaclassdescription = "Virtua NAT";
-              virtuaicon = "fa fa-desktop fa-lg";
+              virtuaicon = "fa fa-wifi fa-lg";
             } else if (clientClass === "Virtua_PME") {
               virtuaclass = "alert-warning";
               virtuaclassdescription = "Virtua PME";
@@ -367,6 +367,8 @@ body {
             if(obj['Cable Modem']['Modelo'] != '123456789'){
               linkHttpUserPass = ' <a href="javascript:void(0);" style="color:inherit; text-decoration:inherit; data-toggle="tooltipHttpAccess" title="HTTP Access CM"><i class="fa fa-unlock" aria-hidden="true" data-toggle="modal" data-target="#staticBackdropHttpUserPass"></i></a>';
             }
+
+            linkWifiData = ' <a href="javascript:void(0);" style="color:inherit; text-decoration:inherit; data-toggle="tooltipWifiData" title="Wifi Data"><i class="fa fa-wifi" aria-hidden="true" data-toggle="modal" data-target="#staticBackdropWifi"></i></a>';
 
             //FUNCAO DE SNR DA UPSTREAM
             var snrUp = '';
@@ -562,7 +564,7 @@ body {
             htmlData += '               </tr>';
             htmlData += '               <tr>';
             htmlData += '                 <td>Contrato: <b>' + docsiscontrato + '</b></td>';
-            htmlData += '                 <td>IP Cable: <b><a href="http://'+ obj['Cable Modem']['End IP']+'" target="_blank" title="Acessar CM">' + obj['Cable Modem']['End IP'] + '</a>'+linkHttpUserPass+'</b></td>';
+            htmlData += '                 <td>IP Cable: <b><a href="http://'+ obj['Cable Modem']['End IP']+'" target="_blank" title="Acessar CM">' + obj['Cable Modem']['End IP'] + '</a>'+linkHttpUserPass+' '+linkWifiData+'</b></td>';
             htmlData += '               </tr>';
             htmlData += '               <tr>';
             htmlData += '                 <td>Vendor: <b>' + obj['Cable Modem']['Vendor'] + '</b></td>';
@@ -712,6 +714,28 @@ body {
             htmlData += '           </div>';
             htmlData += '         </div>';
             htmlData += '         <!-- END STB MODAL -->';
+            htmlData += '         <!-- WIFI MODAL -->';
+            htmlData += '         <div class="modal fade" id="staticBackdropWifi" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropWifiLabel" aria-hidden="true">';
+            htmlData += '           <div class="modal-dialog">';
+            htmlData += '             <div class="modal-content">';
+            htmlData += '               <div class="modal-header alert alert-danger">';
+            htmlData += '                 <i class="fa fa-wifi fa-2x" aria-hidden="true"></i>&nbsp;&nbsp;';
+            htmlData += '                 <h5 class="modal-title" id="staticBackdropWifiLabel">Wifi [EM CONSTRUÇÃO]</h5>';
+            htmlData += '                 <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">';
+            htmlData += '                   <span aria-hidden="true">&times;</span>';
+            htmlData += '                 </button>';
+            htmlData += '               </div>';
+            htmlData += '               <div class="modal-body">';
+            htmlData += '                 <div class="loading_modal"></div>';
+            htmlData += '                 <span id="wifiTable"></span>';
+            htmlData += '               </div>';
+            htmlData += '               <div class="modal-footer">';
+            htmlData += '                 <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>';
+            htmlData += '               </div>';
+            htmlData += '             </div>';
+            htmlData += '           </div>';
+            htmlData += '         </div>';
+            htmlData += '         <!-- END WIFI MODAL -->';
             htmlData += '         <!-- OFDM INFO MODAL -->';
             htmlData += '         <div class="modal fade" id="staticBackdropOfdmInfo" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropOfdmInfoLabel" aria-hidden="true">';
             htmlData += '           <div class="modal-dialog modal-dialog-scrollable">';
@@ -1107,6 +1131,18 @@ body {
               htmlMta += '</table>';
               loading_modal_hide();
               $("#mtaTable").html(htmlMta);
+            });
+          });
+          $("#staticBackdropWifi").on('show.bs.modal', function(e) {
+            $("#wifiTable").empty();
+            loading_modal_show();
+            var mac = obj['Cable Modem']['MAC'];
+            $.post("ccm/get_wificm.php",{
+              mac: mac.toUpperCase()
+            },
+            function(retorna){
+              loading_modal_hide();
+              $("#wifiTable").html(retorna);
             });
           });
           $("#staticBackdropOfdmInfo").on('show.bs.modal', function(e) {
