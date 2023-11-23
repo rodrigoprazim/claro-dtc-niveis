@@ -31,7 +31,8 @@ if(isset($_POST)){
     'QAM_INPUT_POWER_LEVEL_PERCENT' => 'PS',
     'QAM_SIGNAL_QUALITY_LEVEL_PERCENT' => 'QS',
     'SNR' => 'SNR',
-    'FREQ_QAM' => 'Frequencia do Canal'
+    'FREQ_QAM' => 'Frequencia do Canal',
+    'CA_SHARED_ADDRESS' => 'Decoder ID'
   );
 
   $status_update_id = array(

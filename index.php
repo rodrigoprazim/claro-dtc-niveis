@@ -369,16 +369,17 @@ body {
             }
 
             linkWifiData = ' <a href="javascript:void(0);" style="color:inherit; text-decoration:inherit; data-toggle="tooltipWifiData" title="Wifi Data"><i class="fa fa-wifi" aria-hidden="true" data-toggle="modal" data-target="#staticBackdropWifi"></i></a>';
-
+            
             //FUNCAO DE SNR DA UPSTREAM
-            var snrUp = '';
             $.post("ccm/get_idx.php",{
               cmtsIp: obj['CMTS']['Ip'],
-              interface: obj['CMTS']['Primary UP'],
               idx_primary: obj['CMTS']['Primary Up Idx']
-            },function(res){
-              $(".snrUp").html(res);
+            },function(retorna){
+              let data = JSON.parse(retorna);
+              $(".upDescription").html(data['if_desc']);
+              $(".snrUp").html(data['snr']);
             });
+
             $('[data-toggle="tooltipUp"]').tooltip();
             $('[data-toggle="tooltipDw"]').tooltip();
             $('[data-toggle="tooltipMTA"]').tooltip();
@@ -472,8 +473,7 @@ body {
             htmlData += '         <div class="content table-responsive table-full-width">';
             htmlData += '           <table class="table table-striped">';
             htmlData += '             <thead>';
-            htmlData += '               <th></th>';
-            htmlData += '               <th></th>';
+            htmlData += '               <th colspan="2"></th>';
             htmlData += '             </thead>';
             htmlData += '             <tbody>';
             htmlData += '               <tr>';
@@ -510,8 +510,7 @@ body {
             htmlData += '         <div class="content table-responsive table-full-width">';
             htmlData += '           <table class="table table-striped">';
             htmlData += '             <thead>';
-            htmlData += '               <th></th>';
-            htmlData += '               <th></th>';
+            htmlData += '               <th colspan="2"></th>';
             htmlData += '             </thead>';
             htmlData += '             <tbody>';
             htmlData += '               <tr>';
@@ -524,7 +523,7 @@ body {
             htmlData += '               </tr>';
             htmlData += '               <tr>';
             htmlData += '                 <td>Placa/Up:</td>';
-            htmlData += '                 <td><b>' + obj['CMTS']['Primary UP'] + '</b></td>';
+            htmlData += '                 <td><b>' + obj['CMTS']['Primary UP'] + ' <span class="upDescription"></span></b></td>';
             htmlData += '               </tr>';
             htmlData += '               <tr>';
             htmlData += '                 <td>Node:</td>';
@@ -861,6 +860,13 @@ body {
             htmlData += ' </div>';
           } else if(obj['CMTS']['Ip'] != "NOT FOUND" && obj['CMTS']['Status'] != "Online"){
 
+            $.post("ccm/get_idx.php",{
+              cmtsIp: obj['CMTS']['Ip'],
+              idx_primary: obj['CMTS']['Primary Up Idx']
+            },function(retorna){
+              let data = JSON.parse(retorna);
+              $(".upDescription").html(data['if_desc']);
+            });
             var virtuaclass = "alert-danger";
             var virtuaicon = "fa fa-power-off fa-lg";
 
@@ -880,8 +886,7 @@ body {
             htmlData += '         <div class="content table-responsive table-full-width">';
             htmlData += '           <table class="table table-striped">';
             htmlData += '             <thead>';
-            htmlData += '               <th></th>';
-            htmlData += '               <th></th>';
+            htmlData += '               <th colspan="2"></th>';
             htmlData += '             </thead>';
             htmlData += '             <tbody>';
             htmlData += '               <tr>';
@@ -918,8 +923,7 @@ body {
             htmlData += '         <div class="content table-responsive table-full-width">';
             htmlData += '           <table class="table table-striped">';
             htmlData += '             <thead>';
-            htmlData += '               <th></th>';
-            htmlData += '               <th></th>';
+            htmlData += '               <th colspan="2"></th>';
             htmlData += '             </thead>';
             htmlData += '             <tbody>';
             htmlData += '               <tr>';
@@ -932,12 +936,11 @@ body {
             htmlData += '               </tr>';
             htmlData += '               <tr>';
             htmlData += '                 <td>Placa/Up:</td>';
-            htmlData += '                 <td><b>' + obj['CMTS']['Primary UP'] + '</b></td>';
+            htmlData += '                 <td><b>' + obj['CMTS']['Primary UP'] + ' <span class="upDescription"></span></b></td>';
             htmlData += '               </tr>';
             htmlData += '               <tr>';
             htmlData += '                 <td>Node:</td>';
-            htmlData += '                 <td><b>' + docsisnode + '</b>';
-            htmlData += '                 </td>';
+            htmlData += '                 <td><b>' + docsisnode + '</b></td>';
             htmlData += '               </tr>';
             htmlData += '             </tbody>';
             htmlData += '           </table>';

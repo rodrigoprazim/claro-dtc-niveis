@@ -20,25 +20,24 @@ if(isset($_POST)){
   $htmlWifi = '<table class="table table-sm table-bordered table-hover">';
   $htmlWifi .= '  <tbody>';
   foreach($data->{'SSID Table'} as $key => $row){
-    $htmlWifi .= '    <tr>';
-    $htmlWifi .= '      <th scope="col">Status</th>';
-    $htmlWifi .= '      <td nowrap="nowrap"><b>'.$row->{'Status'}.'</b></td>';
-    $htmlWifi .= '    </tr>';
+    if(preg_match('/^Item #/',$key)){
+      if(!empty($row->{'Enabled'}) && $row->{'Enabled'} == 1){
+        $htmlWifi .= '    <tr>';
+        $htmlWifi .= '      <th scope="col">SSID</th>';
+        $htmlWifi .= '      <td nowrap="nowrap"><b>'.$row->{'SSID'}.'</b></td>';
+        $htmlWifi .= '    </tr>';
 
-    $htmlWifi .= '    <tr>';
-    $htmlWifi .= '      <th scope="col">SSID</th>';
-    $htmlWifi .= '      <td nowrap="nowrap"><b>'.$row->{'SSID'}.'</b></td>';
-    $htmlWifi .= '    </tr>';
+        $htmlWifi .= '    <tr>';
+        $htmlWifi .= '      <th scope="col">Status</th>';
+        $htmlWifi .= '      <td nowrap="nowrap"><b>'.$row->{'Status'}.'</b></td>';
+        $htmlWifi .= '    </tr>';
 
-    $htmlWifi .= '    <tr>';
-    $htmlWifi .= '      <th scope="col">Clientes Conectados</th>';
-    $htmlWifi .= '      <td nowrap="nowrap"><b>'.$row->{'Connected Clients'}.'</b></td>';
-    $htmlWifi .= '    </tr>';
-
-    $htmlWifi .= '    <tr>';
-    $htmlWifi .= '      <th scope="col">Habilitado</th>';
-    $htmlWifi .= '      <td nowrap="nowrap"><b>'.$row->{'Enabled'}.'</b></td>';
-    $htmlWifi .= '    </tr>';
+        $htmlWifi .= '    <tr>';
+        $htmlWifi .= '      <th scope="col">Clientes Conectados</th>';
+        $htmlWifi .= '      <td nowrap="nowrap"><b>'.$row->{'Connected Clients'}.'</b></td>';
+        $htmlWifi .= '    </tr>';
+      }
+    }
   }
   $htmlWifi .= '  </tbody>';
   $htmlWifi .= '</table>';

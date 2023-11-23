@@ -12,22 +12,22 @@ $modem = $_POST['mta_mac'];
 $contexto = "dc=mta,dc=".$vGlobal['dc_ldap'];
 $prog = "/dados/coletor/mta_query";
 
-if (!$ds_local){
+if(!$ds_local){
   die ("Impossivel conectar ao server LDAP, Contate o Datacenter.");
 }
 
 $r = ldap_bind($ds_local,"uid=datacenter,dc=virtua","dc2003");
-if ($r == FALSE){
+if($r == FALSE){
   die("LDAP: Usuario ou senha invalidos.");
 }
 
-if ($modem != ""){
+if($modem != ""){
   $mac = "1,6,".substr($modem,0,2).":".substr($modem,2,2).":".substr($modem,4,2).":".substr($modem,6,2).":".substr($modem,8,2).":".substr($modem,10,2);
 
   $sr = ldap_search($ds_local,$contexto, "docsismodemmacaddress=$mac");
   $info = ldap_get_entries($ds_local, $sr);
 
-  if ($info["count"] > 0){
+  if($info["count"] > 0){
     $obj->mac = $modem;
     $obj->num_tel1 = $info[0]['docsisntel'][0];
     $obj->num_tel2 = $info[0]['docsisntel'][1];
