@@ -168,7 +168,7 @@ body {
     </div>
   </div>
   <div id="footer">
-    <p><center>Copyright ©<?php echo date('Y');?> Datacenter Cluster Norte, All Rights Reserved</center></p>
+    <p><center>Copyright ©<?php echo date('Y');?> Datacenter Cluster <?php echo ucwords(strtolower($vGlobal['cluster'])); ?>, All Rights Reserved</center></p>
   </div>
   <script>
   $(document).ready(function(){
