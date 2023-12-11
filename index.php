@@ -227,6 +227,7 @@ body {
           var cable = JSON.parse(retorna);
           var cableSanitized = cable.docsis.replace(/'/g,'"');
           var obj = JSON.parse(cableSanitized);
+          var infocontrato = "";
           //console.log(obj);
           if(typeof cable.ldap[0] !== "undefined"){
             var clientClass = cable.ldap[0]['docsisclientclass'][0];
@@ -259,6 +260,8 @@ body {
             
             docsisnode = cable.ldap[0]['docsisnode'][0];
 
+            infocontrato = " | Contrato: "+cable.ldap[0]['docsiscontrato'][0];
+
           }else{
             virtuaclass = "alert-light";
             virtuaclassdescription = "Sem Contrato";
@@ -280,6 +283,7 @@ body {
                   };
               });
               var docsiscontrato = cable.ldap[0]['docsiscontrato'][0];
+              infocontrato = " | Contrato: "+docsiscontrato;
             }else{
               var policyname = "N/A";
               var docsiscontrato = "";
@@ -352,7 +356,7 @@ body {
               rxLevel = obj['Cable Modem']['Downstreams']['Down #0']['RX Level']+' dbmV';
 
             }else{
-              colorRxModem = 'green';
+              colorRxModem = 'red';
               rxLevel = 'Error';
             }
 
@@ -460,7 +464,7 @@ body {
             htmlData  = '<div class="container-fluid">';
             htmlData += '  <div class="alert ' + virtuaclass + '" style="font-size: 1.2em;">';
             htmlData += '    <i class="' + virtuaicon + '" aria-hidden="true"></i>';
-            htmlData += '    <span><b> ' + virtuaclassdescription + ' | ' + obj['Cable Modem']['MAC'].toUpperCase() + '</b></span>';
+            htmlData += '    <span><b> ' + virtuaclassdescription + ' | ' + obj['Cable Modem']['MAC'].toUpperCase() + infocontrato + '</b></span>';
             htmlData += '  </div>';
             htmlData += '    <div class="row">';
             htmlData += '     <!-- STATUS -->';
@@ -873,7 +877,7 @@ body {
             htmlData  = '<div class="container-fluid">';
             htmlData += '  <div class="alert ' + virtuaclass + '" style="font-size: 1.2em;">';
             htmlData += '    <i class="' + virtuaicon + '" aria-hidden="true"></i>';
-            htmlData += '    <span><b> ' + virtuaclassdescription + ' | ' + consulta.toUpperCase() + '</b></span>';
+            htmlData += '    <span><b> ' + virtuaclassdescription + ' | ' + consulta.toUpperCase() + infocontrato + '</b></span>';
             htmlData += '  </div>';
             htmlData += '    <div class="row">';
             htmlData += '     <!-- STATUS -->';
